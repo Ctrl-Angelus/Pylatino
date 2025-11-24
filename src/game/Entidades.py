@@ -6,25 +6,44 @@ from Parametros import TAMAÑO
 
 class Jugador:
     def __init__(self, cuerpo: Rect, velocidad: float):
-        self.cuerpo = cuerpo
-        self.velocidad = velocidad
+        self.cuerpo: Rect = cuerpo
+        self.velocidad: float = velocidad
 
         self.controles = {
-            pygame.K_a: (-self.velocidad, 0),
-            pygame.K_d: (self.velocidad, 0),
             pygame.K_w: (0, -self.velocidad),
-            pygame.K_s: (0, self.velocidad)
+            pygame.K_a: (-self.velocidad, 0),
+            pygame.K_s: (0, self.velocidad),
+            pygame.K_d: (self.velocidad, 0)
         }
 
-    def colisiones(self, limites: list, movimiento: tuple) -> bool:
-        colision_inicial_en_x: bool = self.cuerpo.x + movimiento[0] < 0
-        colision_final_en_x: bool = self.cuerpo.x + TAMAÑO + movimiento[0] > limites[0]
+    def colision_limite(self, limites: list, movimiento: tuple) -> bool:
+        posicion_inicial_x = self.cuerpo.x
+        posicion_inicial_y = self.cuerpo.y
 
-        colision_inicial_en_y: bool = self.cuerpo.y + movimiento[1] < 0
-        colision_final_en_y: bool = self.cuerpo.y + TAMAÑO + movimiento[1] > limites[1]
+        posicion_final_x = posicion_inicial_x + movimiento[0]
+        posicion_final_y = posicion_inicial_y + movimiento[1]
 
-        colision_x: bool = colision_inicial_en_x or colision_final_en_x
-        colision_y: bool = colision_inicial_en_y or colision_final_en_y
+        limite_x = limites[0] - TAMAÑO
+        limite_y = limites[1] - TAMAÑO
+
+        colision_inicial_x = posicion_final_x < 0
+        colision_final_x = posicion_final_x > limite_x
+
+        colision_inicial_y = posicion_final_y < 0
+        colision_final_y = posicion_final_y > limite_y
+
+        colision_x = colision_inicial_x or colision_final_x
+        colision_y = colision_inicial_y or colision_final_y
+
+        if colision_inicial_x:
+            self.cuerpo.move_ip(0 - posicion_inicial_x, 0)
+        elif colision_final_x:
+            self.cuerpo.move_ip(limite_x - posicion_inicial_x, 0)
+
+        if colision_inicial_y:
+            self.cuerpo.move_ip(0, 0 - posicion_inicial_y)
+        elif colision_final_y:
+            self.cuerpo.move_ip(0, limite_y - posicion_inicial_y)
 
         return colision_x or colision_y
 
@@ -42,8 +61,7 @@ class Jugador:
 
         for clave, movimiento in self.controles.items():
             if teclas[clave]:
-
-                if self.colisiones(limites, movimiento):
+                if self.colision_limite(limites, movimiento):
                     continue
                 else:
                     self.cuerpo.move_ip(

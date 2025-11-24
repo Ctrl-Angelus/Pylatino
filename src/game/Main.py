@@ -22,7 +22,7 @@ def main():
     escena = pygame.display.set_mode(DIMENSIONES_DEL_LIENZO)
     tiempo = pygame.time.Clock()
 
-    jugador = Jugador(Rect(10, 10, TAMAÑO, TAMAÑO), VELOCIDAD)
+    jugador = Jugador(Rect(0, 0, TAMAÑO, TAMAÑO), VELOCIDAD)
 
     ejecutando = True
     while ejecutando:
