@@ -3,7 +3,7 @@ import math
 
 def movimiento_respecto_al_mouse(velocidad: float, posicion_jugador: tuple, posicion_mouse: tuple) -> tuple:
 
-    zona_muerta = 10# Un área alrededor del jugador donde no se genera movimiento
+    zona_muerta = 10 # Un área alrededor del jugador donde no se genera movimiento
 
     # Se calcula el vector que se forma entre el jugador y el mouse
     vector_original = (
@@ -12,7 +12,7 @@ def movimiento_respecto_al_mouse(velocidad: float, posicion_jugador: tuple, posi
     )
 
     # La distancia entre los puntos genera la magnitud del vector
-    magnitud = math.sqrt(math.pow(vector_original[0], 2) + math.pow(vector_original[1], 2))
+    magnitud = math.sqrt(vector_original[0] ** 2 + vector_original[1] ** 2)
 
     # En caso de que la magnitud sea
     if magnitud < zona_muerta:

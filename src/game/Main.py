@@ -1,8 +1,8 @@
 import pygame
-from pygame.rect import Rect
 
 from Entidades import Jugador
 from Parametros import *
+from Imagen import Imagen
 
 
 def main():
@@ -13,25 +13,17 @@ def main():
     escena = pygame.display.set_mode(DIMENSIONES_DEL_LIENZO)
     tiempo = pygame.time.Clock()
 
-    fondo = pygame.image.load("src/recursos/fondo-prueba.png").convert()
-    factor = DIMENSIONES_DEL_LIENZO[1] / (fondo.get_height() / 2)
-    fondo_escalado = pygame.transform.scale(
-        fondo,
-        (
-            fondo.get_width() * factor,
-            fondo.get_height() * factor
-        )
-    )
+    fondo = Imagen("src/recursos/fondo.png", 2)
 
-    fondo_escalado_rect = fondo_escalado.get_rect()
-    fondo_escalado_rect.x = -(fondo_escalado.get_width() - DIMENSIONES_DEL_LIENZO[0]) / 2
-    fondo_escalado_rect.y = -(fondo_escalado.get_height() - DIMENSIONES_DEL_LIENZO[1]) / 2
+    fondo_estatico = Imagen("src/recursos/fondo-estatico.png", 1)
 
-    posicion_inicial = (DIMENSIONES_DEL_LIENZO[0] / 2) - (MEDIDA_DE_TILE / 2)
+    fondo.rect.x = -(fondo.width - DIMENSIONES_DEL_LIENZO[0]) / 2
+    fondo.rect.y = -(fondo.height - DIMENSIONES_DEL_LIENZO[1]) / 2
 
-    jugador = Jugador(Rect(posicion_inicial, posicion_inicial, MEDIDA_DE_TILE, MEDIDA_DE_TILE), VELOCIDAD)
+    posicion_inicial_x = escena.get_rect().center[0] - MEDIDA_DE_TILE / 2
+    posicion_inicial_y = escena.get_rect().center[1] - MEDIDA_DE_TILE / 2
 
-    escena.blit(fondo_escalado, fondo_escalado_rect)
+    jugador = Jugador(posicion_inicial_x, posicion_inicial_y, MEDIDA_DE_TILE, MEDIDA_DE_TILE, VELOCIDAD)
 
     ejecutando = True
     while ejecutando:
@@ -44,12 +36,12 @@ def main():
         if teclas_presionadas[jugador.controles.get("adelante")]:
             posicion_mouse = pygame.mouse.get_pos()
 
-            jugador.mover(posicion_mouse, fondo_escalado_rect)
+            jugador.mover(posicion_mouse, fondo.rect)
 
-        escena.fill((0,0,0))
-        escena.blit(fondo_escalado, fondo_escalado_rect)
+        escena.blit(fondo_estatico.imagen, fondo_estatico.rect)
+        escena.blit(fondo.imagen, fondo.rect)
 
-        pygame.draw.rect(escena, (0, 0, 255), jugador.cuerpo)
+        escena.blit(jugador.sprite, jugador.cuerpo)
         pygame.display.flip()
         tiempo.tick(FPS)
 
