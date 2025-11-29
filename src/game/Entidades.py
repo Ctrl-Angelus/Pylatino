@@ -2,9 +2,10 @@
 import pygame
 from pygame import Rect
 from Movimiento import movimiento_relativo
-from Colisiones import desplazamiento_y_colision
+from Colisiones_borde import desplazamiento_y_colision
 from Parametros import MEDIDA_DE_TILE
-from src.game.Colisiones import desplazamiento_y_colision_enemigos
+from Colisiones_borde import desplazamiento_y_colision_enemigos
+from Colisiones_entidades import colisiones_con_entidades
 
 
 class Entidad:
@@ -26,20 +27,18 @@ class Entidad:
         self.cuerpo.x = posicion_inicial_x
         self.cuerpo.y = posicion_inicial_y
 
-    def mover(self, objetivo: tuple, fondo: Rect, direccion: int, entidades=None):
+    def mover(self, objetivo: tuple, fondo: Rect, direccion: int, entidades: list):
         desplazamiento: tuple = movimiento_relativo(
             self.velocidad,
             self.cuerpo.center,
             objetivo,
-            MEDIDA_DE_TILE
+            MEDIDA_DE_TILE / 2,
+            None
         )
 
         movimiento_x, movimiento_y = desplazamiento_y_colision_enemigos(self.cuerpo, desplazamiento, fondo, direccion)
 
-        self.cuerpo.move_ip(
-            movimiento_x,
-            movimiento_y
-        )
+        colisiones_con_entidades(self, movimiento_x, movimiento_y, entidades)
 
 
 class Jugador(Entidad):
@@ -49,12 +48,13 @@ class Jugador(Entidad):
         "click": pygame.MOUSEBUTTONDOWN
     }
 
-    def mover(self, posicion_mouse: tuple, fondo: Rect, direccion: int, entidades: list[Entidad] = None) -> None:
+    def mover(self, posicion_mouse: tuple, fondo: Rect, direccion: int, entidades: list[Entidad]) -> None:
         desplazamiento: tuple = movimiento_relativo(
             self.velocidad,
                 self.cuerpo.center,
                 posicion_mouse,
-                10
+                10,
+            None
             )
 
         movimiento_x, movimiento_y = desplazamiento_y_colision(self.cuerpo, desplazamiento, fondo, direccion)

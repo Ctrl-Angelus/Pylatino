@@ -33,8 +33,10 @@ def main():
     )
 
     enemigos = []
+    posicion_mouse = pygame.mouse.get_pos()
+    movimiento_mouse = False
 
-    for i in range(50):
+    for i in range(20):
         x = random.randint(fondo.cuerpo.left, int(fondo.cuerpo.right - MEDIDA_DE_TILE))
         y = random.randint(fondo.cuerpo.top, int(fondo.cuerpo.bottom - MEDIDA_DE_TILE))
         enemigos.append(
@@ -50,14 +52,16 @@ def main():
                 ejecutando = False
             if evento.type == jugador.controles["click"]:
                 print("Click")
+            if evento.type == pygame.MOUSEMOTION:
+                posicion_mouse = pygame.mouse.get_pos()
 
         teclas_presionadas = pygame.key.get_pressed()
-        posicion_mouse = pygame.mouse.get_pos()
+
+
         if teclas_presionadas[jugador.controles["adelante"]]:
             jugador.mover(posicion_mouse, fondo.cuerpo, -1, enemigos)
 
         elif teclas_presionadas[jugador.controles["atrás"]]:
-
             jugador.mover(posicion_mouse, fondo.cuerpo, 1, enemigos)
 
 
@@ -67,7 +71,7 @@ def main():
 
         for enemigo in enemigos:
             if teclas_presionadas[pygame.K_SPACE]:
-                enemigo.mover(jugador.cuerpo.center, fondo.cuerpo, 1)
+                enemigo.mover(jugador.cuerpo.center, fondo.cuerpo, 1, enemigos)
             escena.blit(enemigo.sprite, enemigo.cuerpo)
 
         escena.blit(jugador.sprite, jugador.cuerpo)
