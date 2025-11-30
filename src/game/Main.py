@@ -1,9 +1,10 @@
 import pygame
 import random
 
-from Entidades import Jugador, Entidad
-from Parametros import *
-from Sprite import Sprite
+from src.game.Clases.Entidades import Jugador
+from src.game.Parametros import *
+from src.game.Clases.Sprite import Sprite
+from src.game.Clases.Entidades import Enemigo
 
 
 def main():
@@ -16,34 +17,38 @@ def main():
 
     entidades = []
 
-    fondo = Sprite(
-        "src/recursos/fondo.png",
-        60, 30
-    )
-
-    fondo_estatico = Sprite("src/recursos/fondo-estatico.png", TILES, TILES)
+    fondo = Sprite("src/recursos/fondo.png", None)
 
     fondo.cuerpo.x = -(fondo.width - DIMENSIONES_DEL_LIENZO[0]) / 2
     fondo.cuerpo.y = -(fondo.height - DIMENSIONES_DEL_LIENZO[1]) / 2
+
+    fondo_estatico = Sprite("src/recursos/fondo-estatico.png", (TILES, TILES))
 
     posicion_inicial_x = escena.get_rect().center[0] - MEDIDA_DE_TILE / 2
     posicion_inicial_y = escena.get_rect().center[1] - MEDIDA_DE_TILE / 2
 
     jugador = Jugador(
-        posicion_inicial_x, posicion_inicial_y, MEDIDA_DE_TILE, MEDIDA_DE_TILE,
-        VELOCIDAD, "src/recursos/jugador.png"
+        (posicion_inicial_x, posicion_inicial_y),
+        MEDIDA_DE_TILE, MEDIDA_DE_TILE,
+        VELOCIDAD,
+        "src/recursos/jugador.png"
     )
 
-    posicion_mouse = pygame.mouse.get_pos()
+    objetivos = [jugador.cuerpo.topleft, jugador.cuerpo.topright, jugador.cuerpo.bottomleft, jugador.cuerpo.bottomright]
 
     for i in range(20):
-        x = random.randint(fondo.cuerpo.left, int(fondo.cuerpo.right - MEDIDA_DE_TILE))
-        y = random.randint(fondo.cuerpo.top, int(fondo.cuerpo.bottom - MEDIDA_DE_TILE))
+        x_aleatoria = random.randint(fondo.cuerpo.left, int(fondo.cuerpo.right - MEDIDA_DE_TILE))
+        y_aleatoria = random.randint(fondo.cuerpo.top, int(fondo.cuerpo.bottom - MEDIDA_DE_TILE))
         entidades.append(
-            Entidad(
-                x, y, MEDIDA_DE_TILE, MEDIDA_DE_TILE,
-                VELOCIDAD / 2, "src/recursos/enemigo.png")
+            Enemigo(
+                (x_aleatoria, y_aleatoria),
+                MEDIDA_DE_TILE, MEDIDA_DE_TILE,
+                VELOCIDAD / 2,
+                "src/recursos/enemigo.png",
+                objetivos)
         )
+
+    posicion_mouse = pygame.mouse.get_pos()
 
     ejecutando = True
     while ejecutando:
@@ -70,8 +75,7 @@ def main():
         escena.blit(fondo.imagen, fondo.cuerpo)
 
         for entidad in entidades:
-            if teclas_presionadas[pygame.K_SPACE]:
-                entidad.mover(jugador.cuerpo.center, fondo.cuerpo, 1, entidades)
+            entidad.mover(fondo.cuerpo, 1, entidades)
             escena.blit(entidad.sprite, entidad.cuerpo)
 
         escena.blit(jugador.sprite, jugador.cuerpo)

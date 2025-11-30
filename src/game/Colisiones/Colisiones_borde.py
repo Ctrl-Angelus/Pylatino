@@ -1,7 +1,7 @@
 from pygame import Rect
 
 
-def colision_fondo(personaje: Rect, desplazamiento: tuple, fondo: Rect, direccion: int) -> tuple:
+def colision_borde_jugador(personaje: Rect, desplazamiento: tuple, fondo: Rect, direccion: int) -> tuple:
 
     simulacion: Rect = fondo.move(
         desplazamiento[0] * direccion,
@@ -34,7 +34,7 @@ def colision_fondo(personaje: Rect, desplazamiento: tuple, fondo: Rect, direccio
 
     return movimiento_x, movimiento_y
 
-def desplazamiento_y_colision_enemigos(personaje: Rect, desplazamiento: tuple, fondo: Rect, direccion: int) -> tuple:
+def colision_borde_enemigos(personaje: Rect, desplazamiento: tuple, fondo: Rect, direccion: int) -> tuple:
 
     simulacion: Rect = personaje.move(
         desplazamiento[0] * direccion,

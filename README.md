@@ -23,5 +23,5 @@ source venv/Scripts/activate  # Linux/Mac
 pip install -r requirements.txt
 
 # Ejecutar el juego
-python src/game/Main.py
+python -m src.game.Main
 ```
