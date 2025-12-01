@@ -1,5 +1,6 @@
 import tkinter
 
+
 raiz = tkinter.Tk() # Una instancia de Tkinter que se usará para determinar las dimensiones de la aplicación
 
 raiz.withdraw() # Evita que se muestre la ventana
@@ -18,11 +19,11 @@ TITULO = "Proyecto Pylatino"
 
 FPS: int = 60
 
-TILES = 15
+CANTIDAD_DE_TILES = 15
 
-TAMAÑO_TILE_ORIGINAL = 16 # Cada Tile mide 16x16 pixeles
+MEDIDA_DE_TILE_ORIGINAL = 16 # Cada Tile mide 16x16 pixeles
 
-MEDIDA_DE_TILE: float = ALTO_DE_LA_VENTANA / TILES # Se divide el tamaño de la ventana entre la cantidad de tiles
+MEDIDA_DE_TILE_ESCALADO: float = ALTO_DE_LA_VENTANA / CANTIDAD_DE_TILES # Se divide el tamaño de la ventana entre la cantidad de tiles
 
-VELOCIDAD: float = (10 * MEDIDA_DE_TILE) / FPS # La velocidad son la cantidad de tiles que se mueve el personaje entre los fps cada segundo
+VELOCIDAD: float = (10 * MEDIDA_DE_TILE_ESCALADO) / FPS # La velocidad son la cantidad de tiles que se mueve el personaje entre los fps cada segundo
 

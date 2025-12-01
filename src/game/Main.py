@@ -1,97 +1,38 @@
 import pygame
-import random
 
-from src.game.Clases.Entidades import Jugador
-from src.game.Parametros import *
-from src.game.Clases.Sprite import Sprite
-from src.game.Clases.Entidades import Enemigo
+from src.game.Gestion.AdministradorDeEntidades import AdministradorDeEntidades
+from src.game.Clases.Jugador import Jugador
+from src.game.Gestion.Contexto import ContextoDelJuego
+from src.game.Gestion.Controlador import Controlador
+from src.game.Gestion.Parametros import FPS
 
 
 def main():
-    pygame.init()
+    contexto = ContextoDelJuego()
 
-    pygame.display.set_caption(TITULO)
+    jugador = Jugador(contexto)
 
-    escena = pygame.display.set_mode(DIMENSIONES_DEL_LIENZO)
-    tiempo = pygame.time.Clock()
+    administrador_de_entidades = AdministradorDeEntidades(contexto, jugador)
+    administrador_de_entidades.generar_oleada(20)
 
-    entidades = []
+    controlador = Controlador(contexto, jugador)
 
-    fondo = Sprite("src/recursos/fondo.png", None)
-
-    fondo.cuerpo.x = -(fondo.width - DIMENSIONES_DEL_LIENZO[0]) / 2
-    fondo.cuerpo.y = -(fondo.height - DIMENSIONES_DEL_LIENZO[1]) / 2
-
-    fondo_estatico = Sprite("src/recursos/fondo-estatico.png", (TILES, TILES))
-
-    posicion_inicial_x = escena.get_rect().center[0] - MEDIDA_DE_TILE / 2
-    posicion_inicial_y = escena.get_rect().center[1] - MEDIDA_DE_TILE / 2
-
-    jugador = Jugador(
-        (posicion_inicial_x, posicion_inicial_y),
-        MEDIDA_DE_TILE, MEDIDA_DE_TILE,
-        VELOCIDAD,
-        "src/recursos/jugador.png"
-    )
-
-    direccion = 1
-
-    for i in range(20):
-        x_aleatoria = random.randint(fondo.cuerpo.left, int(fondo.cuerpo.right - MEDIDA_DE_TILE))
-        y_aleatoria = random.randint(fondo.cuerpo.top, int(fondo.cuerpo.bottom - MEDIDA_DE_TILE))
-        entidades.append(
-            Enemigo(
-                (x_aleatoria, y_aleatoria),
-                MEDIDA_DE_TILE, MEDIDA_DE_TILE,
-                VELOCIDAD / 2,
-                "src/recursos/enemigo.png",
-                jugador.cuerpo.center)
-        )
-
-    posicion_mouse = pygame.mouse.get_pos()
-
-    ejecutando = True
-    movimiento_enemigos = True
-
-    while ejecutando:
+    while contexto.ejecutando:
         for evento in pygame.event.get():
+            controlador.verificar_eventos(evento)
 
-            if evento.type == pygame.QUIT:
-                ejecutando = False
+        controlador.verificar_controles()
 
-            if evento.type == jugador.controles["click"]:
-                if evento.button ==  1:
-                    direccion *= -1
+        contexto.escenario.mostrar()
 
-                if evento.button ==  3:
-                    movimiento_enemigos = not movimiento_enemigos
+        for entidad in contexto.entidades:
+            entidad.mover()
+            contexto.escena.blit(entidad.sprite, entidad.cuerpo)
 
-            if evento.type == pygame.MOUSEMOTION:
-                posicion_mouse = pygame.mouse.get_pos()
+        contexto.escena.blit(jugador.sprite, jugador.cuerpo)
 
-        teclas_presionadas = pygame.key.get_pressed()
-
-
-        if teclas_presionadas[jugador.controles["adelante"]]:
-            jugador.mover(posicion_mouse, fondo.cuerpo, -1, entidades)
-
-        elif teclas_presionadas[jugador.controles["atrás"]]:
-            jugador.mover(posicion_mouse, fondo.cuerpo, 1, entidades)
-
-
-
-        escena.blit(fondo_estatico.imagen, fondo_estatico.cuerpo)
-        escena.blit(fondo.imagen, fondo.cuerpo)
-
-        for entidad in entidades:
-            if movimiento_enemigos:
-                entidad.mover(fondo.cuerpo, direccion, entidades, jugador)
-            escena.blit(entidad.sprite, entidad.cuerpo)
-
-        escena.blit(jugador.sprite, jugador.cuerpo)
-
-        pygame.display.flip()
-        tiempo.tick(FPS)
+        contexto.display.flip()
+        contexto.reloj.tick(FPS)
 
     pygame.quit()
 
