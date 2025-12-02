@@ -19,7 +19,7 @@ TITULO = "Proyecto Pylatino"
 
 FPS: int = 60
 
-CANTIDAD_DE_TILES = 15
+CANTIDAD_DE_TILES = 10
 
 MEDIDA_DE_TILE_ORIGINAL = 16 # Cada Tile mide 16x16 pixeles
 

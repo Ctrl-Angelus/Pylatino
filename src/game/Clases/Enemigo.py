@@ -24,7 +24,7 @@ class Enemigo(EntidadBase):
 
             movimiento_x, movimiento_y = colision_borde_enemigos(
                 self.cuerpo, desplazamiento,
-                self.contexto.escenario.fondo.cuerpo,
+                self.contexto.escenario.tile_map.borde,
                 self.contexto.direccion_enemigos)
 
             colisiones_con_entidades(self, movimiento_x, movimiento_y, self.contexto.entidades, self.jugador)

@@ -14,13 +14,13 @@ class AdministradorDeEntidades:
     def generar_oleada(self, cantidad: int):
         for _ in range(20):
             x_aleatoria = random.randint(
-                self.contexto.escenario.fondo.cuerpo.left,
-                int(self.contexto.escenario.fondo.cuerpo.right - MEDIDA_DE_TILE_ESCALADO)
+                self.contexto.escenario.tile_map.borde.left,
+                int(self.contexto.escenario.tile_map.borde.right - MEDIDA_DE_TILE_ESCALADO)
             )
 
             y_aleatoria = random.randint(
-                self.contexto.escenario.fondo.cuerpo.top,
-                int(self.contexto.escenario.fondo.cuerpo.bottom - MEDIDA_DE_TILE_ESCALADO)
+                self.contexto.escenario.tile_map.borde.top,
+                int(self.contexto.escenario.tile_map.borde.bottom - MEDIDA_DE_TILE_ESCALADO)
             )
 
             posicion_inicial = (x_aleatoria, y_aleatoria)

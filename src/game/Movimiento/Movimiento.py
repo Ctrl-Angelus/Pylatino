@@ -1,11 +1,11 @@
 import math
 
-from pygame import Rect
+from src.game.Gestion.Contexto import ContextoDelJuego
 
 
 def movimiento_relativo(velocidad: float, posicion_actual: tuple, posicion_objetivo: tuple) -> tuple:
 
-    zona_muerta: float = 10 # Una zona (en pixeles) alrededor del objetivo que previene magnitudes (distancias entre puntos) de cero
+    zona_muerta: float = 10 # Una zona (en píxeles) alrededor del objetivo que previene magnitudes (distancias entre puntos) de cero
 
     # Se calcula el vector que se forma entre el jugador y el mouse
     vector_original = (
@@ -27,13 +27,14 @@ def movimiento_relativo(velocidad: float, posicion_actual: tuple, posicion_objet
 
     return movimiento_x, movimiento_y
 
-def mover_fondo(fondo: Rect, entidades: list, movimiento_x: float, movimiento_y: float):
-    fondo.move_ip(
-        movimiento_x,
-        movimiento_y
-    )
+def mover_fondo(contexto: ContextoDelJuego, movimiento_x: float, movimiento_y: float):
+    for linea in contexto.escenario.tile_map.tiles:
+        for i in range(len(linea)):
+            linea[i].cuerpo.move_ip(movimiento_x, movimiento_y)
 
-    for entidad in entidades:
+    contexto.escenario.tile_map.borde.move_ip(movimiento_x, movimiento_y)
+
+    for entidad in contexto.entidades:
         entidad.cuerpo.move_ip(
             movimiento_x, movimiento_y
         )

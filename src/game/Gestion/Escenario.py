@@ -1,15 +1,13 @@
-from src.game.Sprites.Sprite import Sprite
+
 from src.game.Sprites.SpriteSheet import SpriteSheet
-from src.game.Gestion.Parametros import DIMENSIONES_DEL_LIENZO
+from src.game.TileMap import TileMap
 
 
 class Escenario:
     def __init__(self, contexto):
         self.contexto = contexto
-        self.fondo = Sprite("src/recursos/fondo.png", None, None)
 
-        self.fondo.cuerpo.x = -(self.fondo.width - DIMENSIONES_DEL_LIENZO[0]) / 2
-        self.fondo.cuerpo.y = -(self.fondo.height - DIMENSIONES_DEL_LIENZO[1]) / 2
+        self.tile_map = TileMap("src/recursos/tilemap/tilemap-1.txt", contexto)
 
         self.fondo_estatico = SpriteSheet("src/recursos/fondo-estatico.png")
         self.fondo_estatico.generar_frames(4, 2, (60, 60), 1)
@@ -23,4 +21,4 @@ class Escenario:
             sprite.cuerpo)
 
         self.fondo_estatico.animacion(0)
-        self.contexto.escena.blit(self.fondo.imagen, self.fondo.cuerpo)
+        self.tile_map.mostrar()

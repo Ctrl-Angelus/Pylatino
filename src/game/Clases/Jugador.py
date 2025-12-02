@@ -40,8 +40,6 @@ class Jugador(EntidadBase):
 
     def mover(self) -> None:
 
-        fondo = self.contexto.escenario.fondo.cuerpo
-
         if self.dash_activo:
             self.dash()
 
@@ -51,14 +49,14 @@ class Jugador(EntidadBase):
                 pygame.mouse.get_pos()
             )
 
-        movimiento_x, movimiento_y = colision_borde_jugador(self.cuerpo, desplazamiento, fondo, self.direccion)
+        movimiento_x, movimiento_y = colision_borde_jugador(self.cuerpo, desplazamiento, self.contexto.escenario.tile_map.borde, self.direccion)
 
         if self.colisiones:
 
             correccion_x = 0
             correccion_y = 0
 
-            mover_fondo(fondo, self.contexto.entidades, movimiento_x, 0)
+            mover_fondo(self.contexto, movimiento_x, 0)
 
             for entidad in self.contexto.entidades:
                 colision = self.cuerpo.colliderect(entidad.cuerpo)
@@ -70,9 +68,9 @@ class Jugador(EntidadBase):
                     elif movimiento_x < 0:
                         correccion_x = self.cuerpo.right - entidad.cuerpo.left
 
-                    mover_fondo(fondo, self.contexto.entidades, correccion_x, 0)
+                    mover_fondo(self.contexto, correccion_x, 0)
 
-            mover_fondo(fondo, self.contexto.entidades, 0, movimiento_y)
+            mover_fondo(self.contexto,0, movimiento_y)
 
             for entidad in self.contexto.entidades:
                 colision = self.cuerpo.colliderect(entidad.cuerpo)
@@ -84,10 +82,10 @@ class Jugador(EntidadBase):
                     elif movimiento_y < 0:
                         correccion_y = self.cuerpo.bottom - entidad.cuerpo.top
 
-                    mover_fondo(fondo, self.contexto.entidades, 0, correccion_y)
+                    mover_fondo(self.contexto, 0, correccion_y)
 
         else:
-            mover_fondo(fondo, self.contexto.entidades, movimiento_x, movimiento_y)
+            mover_fondo(self.contexto, movimiento_x, movimiento_y)
 
 
     def activar_dash(self):
