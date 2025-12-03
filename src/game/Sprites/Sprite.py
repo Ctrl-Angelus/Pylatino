@@ -7,12 +7,15 @@ from typing import Optional
 class Sprite:
     def __init__(self, ruta: Optional[str], tiles: Optional[tuple], imagen: Optional[Surface]):
 
+        if ruta is None:
+            self.imagen = imagen
+
         if imagen is None:
-            imagen: Surface = pygame.image.load(ruta).convert_alpha()
+            self.imagen: Surface = pygame.image.load(ruta).convert_alpha()
 
         if tiles is None:
-            self.tiles_x: int = imagen.get_width() // MEDIDA_DE_TILE_ORIGINAL
-            self.tiles_y: int = imagen.get_height() // MEDIDA_DE_TILE_ORIGINAL
+            self.tiles_x: int = self.imagen.get_width() // MEDIDA_DE_TILE_ORIGINAL
+            self.tiles_y: int = self.imagen.get_height() // MEDIDA_DE_TILE_ORIGINAL
 
         else:
             self.tiles_x, self.tiles_y = tiles

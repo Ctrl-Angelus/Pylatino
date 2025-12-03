@@ -1,23 +1,22 @@
+
 from pygame import Rect
 
-from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, DIMENSIONES_DEL_LIENZO
-from src.game.Tile import Tile
+from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, DIMENSIONES_DEL_LIENZO, MEDIDA_DE_TILE_ORIGINAL
+from src.game.Tiles.Tile import Tile
+from src.game.Tiles.TileSet import TileSet
 
 
 class TileMap:
-    def __init__(self, url: str, contexto):
+    def __init__(self, tile_map_url: str, tile_set_url: str, contexto):
         self.contexto = contexto
 
-        self.url = url
-        archivo = open(url).read().split()
+        self.tile_map_url = tile_map_url
+        archivo = open(tile_map_url).read().split()
         self.datos = []
         for linea in archivo:
             self.datos.append(linea.split(","))
 
-        self.tile_set = {
-            "1": "src/recursos/tilemap/tiles/tierra.png",
-            "2": "src/recursos/tilemap/tiles/agua.png"
-        }
+        self.tile_set = TileSet(contexto, tile_set_url, MEDIDA_DE_TILE_ORIGINAL, MEDIDA_DE_TILE_ORIGINAL, 1)
 
         self.tiles = []
 
@@ -33,9 +32,9 @@ class TileMap:
         for linea in self.datos:
             x = self.posicion_inicial[0]
             fila = []
-            for i in range(len(linea)):
-                ruta_tile = self.tile_set[linea[i]]
-                fila.append(Tile(ruta_tile, (1, 1), None, int(x), int(y)))
+            for tile in linea:
+                tile = self.tile_set.tiles[tile]
+                fila.append(Tile(None, (1, 1), tile.copy(), int(x), int(y)))
                 x += int(MEDIDA_DE_TILE_ESCALADO)
             self.tiles.append(fila)
             y += int(MEDIDA_DE_TILE_ESCALADO)
@@ -49,5 +48,6 @@ class TileMap:
 
     def mostrar(self):
         for linea in self.tiles:
-            for i in range(len(linea)):
-                self.contexto.escena.blit(linea[i].imagen, linea[i].cuerpo)
+            for tile in linea:
+                if 0 <= tile.cuerpo.right and tile.cuerpo.left <= DIMENSIONES_DEL_LIENZO[0] and 0 <= tile.cuerpo.bottom and tile.cuerpo.top <= DIMENSIONES_DEL_LIENZO[1]:
+                    self.contexto.escena.blit(tile.imagen, tile.cuerpo)

@@ -4,7 +4,7 @@ from src.game.Gestion.AdministradorDeEntidades import AdministradorDeEntidades
 from src.game.Clases.Jugador import Jugador
 from src.game.Gestion.Contexto import ContextoDelJuego
 from src.game.Gestion.Controlador import Controlador
-from src.game.Gestion.Parametros import FPS
+from src.game.Gestion.Parametros import FPS, DIMENSIONES_DEL_LIENZO
 
 
 def main():
@@ -27,7 +27,8 @@ def main():
 
         for entidad in contexto.entidades:
             entidad.mover()
-            contexto.escena.blit(entidad.sprite, entidad.cuerpo)
+            if 0 <= entidad.cuerpo.right and entidad.cuerpo.left <= DIMENSIONES_DEL_LIENZO[0] and 0 <= entidad.cuerpo.bottom and entidad.cuerpo.top <= DIMENSIONES_DEL_LIENZO[1]:
+                contexto.escena.blit(entidad.sprite, entidad.cuerpo)
 
         contexto.escena.blit(jugador.sprite, jugador.cuerpo)
 
