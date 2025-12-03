@@ -2,8 +2,8 @@ import pygame
 
 from src.game.Clases.EntidadBase import EntidadBase
 from src.game.Colisiones.Colisiones_entidades import colisiones_con_entidades
-from src.game.Movimiento.Movimiento import movimiento_relativo, mover_fondo
-from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, VELOCIDAD
+from src.game.Movimiento.Movimiento import movimiento_relativo
+from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, VELOCIDAD, DIMENSIONES_DEL_LIENZO
 from src.game.Gestion.Contexto import ContextoDelJuego
 
 
@@ -59,7 +59,10 @@ class Jugador(EntidadBase):
             self.mover(movimiento_x, movimiento_y)
 
     def mover(self, movimiento_x, movimiento_y) -> None:
-        mover_fondo(self, self.contexto, movimiento_x, movimiento_y)
+        self.cuerpo.move_ip(movimiento_x, movimiento_y)
+
+        self.contexto.offset[0] = self.cuerpo.centerx - DIMENSIONES_DEL_LIENZO[0] // 2
+        self.contexto.offset[1] = self.cuerpo.centery - DIMENSIONES_DEL_LIENZO[1] // 2
 
     def activar_dash(self) -> None:
         if not self.dash_activo:

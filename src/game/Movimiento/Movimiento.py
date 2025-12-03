@@ -1,8 +1,5 @@
 import math
 
-from src.game.Gestion.Contexto import ContextoDelJuego
-from src.game.Gestion.Parametros import DIMENSIONES_DEL_LIENZO
-
 
 def movimiento_relativo(velocidad: float, posicion_actual: tuple, posicion_objetivo: tuple) -> tuple:
 
@@ -27,10 +24,4 @@ def movimiento_relativo(velocidad: float, posicion_actual: tuple, posicion_objet
     movimiento_y = vector_unitario[1] * velocidad
 
     return movimiento_x, movimiento_y
-
-def mover_fondo(jugador, contexto: ContextoDelJuego, movimiento_x: float, movimiento_y: float):
-    jugador.cuerpo.move_ip(movimiento_x, movimiento_y)
-
-    contexto.offset[0] = jugador.cuerpo.centerx - DIMENSIONES_DEL_LIENZO[0] // 2
-    contexto.offset[1] = jugador.cuerpo.centery - DIMENSIONES_DEL_LIENZO[1] // 2
 

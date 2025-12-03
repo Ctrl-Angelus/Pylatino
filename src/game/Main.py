@@ -30,7 +30,8 @@ def main():
         for entidad in contexto.entidades:
             if entidad is not jugador:
                 entidad.movimiento()
-            if contexto.offset[0] <= entidad.cuerpo.right and entidad.cuerpo.left <= DIMENSIONES_DEL_LIENZO[0] + contexto.offset[0] and contexto.offset[1] <= entidad.cuerpo.bottom and entidad.cuerpo.top <= DIMENSIONES_DEL_LIENZO[1] + contexto.offset[1]:
+
+            if entidad.es_visible():
                 contexto.escena.blit(entidad.sprite, entidad.obtener_posicion())
 
         contexto.escena.blit(jugador.sprite, jugador.obtener_posicion())
