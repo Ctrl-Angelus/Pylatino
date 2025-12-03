@@ -36,7 +36,10 @@ class TileMap:
             for columna in range(len(self.datos[fila])):
 
                 lista = self.tile_set.tiles
-                indice = int(self.datos[fila][columna]) - 1
+                material = int(self.datos[fila][columna])
+                indice =  material - 1
+                colision = True if material == 1 else False
+
                 imagen_nuevo_tile = lista[0][indice]
                 nuevo_tile = Tile(
                     None,
@@ -45,7 +48,8 @@ class TileMap:
                     int(posicion_x),
                     int(posicion_y),
                     contexto,
-                    f"{fila} - {columna}"
+                    f"{fila} - {columna}",
+                    colision
                 )
 
                 fila_actual.append(nuevo_tile)
@@ -67,14 +71,37 @@ class TileMap:
                 if tile.es_visible():
                     self.contexto.escena.blit(tile.imagen, tile.obtener_posicion_visual())
 
-    def obtener_tile_actual(self, entidad) -> Optional[Tile]:
-        x_mundo = entidad.cuerpo.centerx
-        y_mundo = entidad.cuerpo.centery
+    def obtener_tile_actual(self, rect) -> Optional[Tile]:
+        columna, fila = self.calcular_coordenada_de_tile(rect)
 
-        col = int((x_mundo - self.posicion_inicial[0]) // MEDIDA_DE_TILE_ESCALADO)
-        fila = int((y_mundo - self.posicion_inicial[1]) // MEDIDA_DE_TILE_ESCALADO)
-
-        if 0 <= fila < len(self.tiles) and 0 <= col < len(self.tiles[0]):
-            return self.tiles[fila][col]
+        if self.verificar_coordenada(fila, columna):
+            return self.tiles[fila][columna]
         else:
             return None
+
+    def obtener_tiles_cercanos(self, rect):
+        columna, fila = self.calcular_coordenada_de_tile(rect)
+
+        tiles = []
+
+        for i in range(-1, 2):
+            for j in range(-1, 2):
+                if self.verificar_coordenada(fila + i, columna + j):
+                    tiles.append(self.tiles[fila + i][columna + j])
+
+        return tiles
+
+    def calcular_coordenada_de_tile(self, rect) -> tuple:
+        x_mundo = rect.centerx
+        y_mundo = rect.centery
+
+        columna = int((x_mundo - self.posicion_inicial[0]) // MEDIDA_DE_TILE_ESCALADO)
+        fila = int((y_mundo - self.posicion_inicial[1]) // MEDIDA_DE_TILE_ESCALADO)
+
+        return columna, fila
+
+    def verificar_coordenada(self, fila, columna) -> bool:
+        fila_dentro_de_limites = 0 <= fila < len(self.tiles)
+        columna_dentro_de_limites = 0 <= columna < len(self.tiles[0])
+
+        return fila_dentro_de_limites and columna_dentro_de_limites

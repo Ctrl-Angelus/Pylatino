@@ -2,7 +2,7 @@
 from src.game.Clases.EntidadBase import EntidadBase
 from src.game.Gestion.Contexto import ContextoDelJuego
 from src.game.Movimiento.Movimiento import movimiento_relativo
-from src.game.Colisiones.Colisiones_entidades import colisiones_con_entidades
+from src.game.Colisiones.Colisiones_entidades import colisiones
 
 
 class Enemigo(EntidadBase):
@@ -23,4 +23,4 @@ class Enemigo(EntidadBase):
             movimiento_x *= self.direccion
             movimiento_y *= self.direccion
 
-            colisiones_con_entidades(self, movimiento_x, movimiento_y, self.contexto.entidades)
+            colisiones(self, movimiento_x, movimiento_y, self.contexto.entidades, self.contexto)

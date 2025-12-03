@@ -1,7 +1,7 @@
 import pygame
 
 from src.game.Clases.EntidadBase import EntidadBase
-from src.game.Colisiones.Colisiones_entidades import colisiones_con_entidades
+from src.game.Colisiones.Colisiones_entidades import colision_tiles
 from src.game.Movimiento.Movimiento import movimiento_relativo
 from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, VELOCIDAD, DIMENSIONES_DEL_LIENZO
 from src.game.Gestion.Contexto import ContextoDelJuego
@@ -46,7 +46,7 @@ class Jugador(EntidadBase):
         movimiento_y *= self.direccion
 
         if self.colisiones:
-            colisiones_con_entidades(self, movimiento_x, movimiento_y, self.contexto.entidades)
+            colision_tiles(self, movimiento_x, movimiento_y, self.contexto)
 
         else:
             self.mover(movimiento_x, movimiento_y)

@@ -6,7 +6,7 @@ from src.game.Sprites.Sprite import Sprite
 
 
 class Tile(Sprite):
-    def __init__(self, ruta: Optional[str], tiles: Optional[tuple], imagen: Optional[Surface], x: int, y: int, contexto, id: str):
+    def __init__(self, ruta: Optional[str], tiles: Optional[tuple], imagen: Optional[Surface], x: int, y: int, contexto, id: str, colision: bool):
         super().__init__(ruta, tiles, imagen)
 
         self.x = x
@@ -18,6 +18,7 @@ class Tile(Sprite):
         self.contexto = contexto
 
         self.id = id
+        self.colision = colision
 
     def es_visible(self) -> bool:
         offset_x_inicial = self.contexto.offset[0]
