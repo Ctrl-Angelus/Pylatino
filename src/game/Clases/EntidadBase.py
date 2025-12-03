@@ -26,8 +26,21 @@ class EntidadBase:
         self.cuerpo.move_ip(posicion_inicial)
         self.contexto = contexto
 
-    def obtener_posicion(self) -> tuple:
-        return self.cuerpo.centerx - self.contexto.offset[0], self.cuerpo.centery - self.contexto.offset[1]
+        self.modificador_de_velocidad = 1
+        self.direccion = 1
+        self.colisiones = True
+
+    def modificar_velocidad(self, factor) -> None:
+        self.modificador_de_velocidad = factor
+
+    def modificar_direccion(self):
+            self.direccion *= -1
+
+    def alternar_colisiones(self) -> None:
+        self.colisiones = not self.colisiones
+
+    def obtener_posicion_visual(self) -> tuple:
+        return self.cuerpo.x - self.contexto.offset[0], self.cuerpo.y - self.contexto.offset[1]
 
     def mover(self, movimiento_x, movimiento_y) -> None:
         self.cuerpo.move_ip(movimiento_x, movimiento_y)
@@ -36,16 +49,11 @@ class EntidadBase:
         offset_x_inicial = self.contexto.offset[0]
         offset_y_inicial = self.contexto.offset[1]
 
-        derecha = self.cuerpo.right
-        izquierda = self.cuerpo.left
-        arriba = self.cuerpo.top
-        abajo = self.cuerpo.bottom
-
         offset_x_final = DIMENSIONES_DEL_LIENZO[0] + self.contexto.offset[0]
         offset_y_final = DIMENSIONES_DEL_LIENZO[1] + self.contexto.offset[1]
 
-        visibilidad_x = derecha >= offset_x_inicial and izquierda <= offset_x_final
+        visibilidad_x = self.cuerpo.right >= offset_x_inicial and self.cuerpo.left <= offset_x_final
 
-        visibilidad_y = abajo >= offset_y_inicial and arriba <= offset_y_final
+        visibilidad_y = self.cuerpo.bottom >= offset_y_inicial and self.cuerpo.top <= offset_y_final
 
         return visibilidad_x and visibilidad_y

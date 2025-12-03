@@ -15,13 +15,11 @@ class ContextoDelJuego:
         self.escena: Surface = pygame.display.set_mode(DIMENSIONES_DEL_LIENZO)
         self.reloj = pygame.time.Clock()
 
-        self.direccion_enemigos = 1
         self.movimiento_enemigos_activo = True
         self.entidades = []
         pygame.display.set_caption(TITULO)
 
         self.escenario = Escenario(self)
-
 
     def limpiar_entidades(self):
         self.entidades = []
@@ -30,7 +28,8 @@ class ContextoDelJuego:
         self.ejecutando = False
 
     def alternar_direccion_enemigos(self):
-        self.direccion_enemigos *= -1
+        for entidad in self.entidades:
+            entidad.modificar_direccion()
 
     def alternar_movimiento_enemigos(self):
         self.movimiento_enemigos_activo = not self.movimiento_enemigos_activo

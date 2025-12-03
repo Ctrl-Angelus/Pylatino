@@ -1,10 +1,11 @@
 import pygame
+from pygame import Surface
 
 
 class TileSet:
-    def __init__(self, contexto, url: str, ancho: int, alto: int, espaciado: int):
+    def __init__(self, url: str, ancho: int, alto: int, espaciado: int):
         self.archivo = pygame.image.load(url).convert_alpha()
-        self.tiles = []
+        self.tiles: list[list[Surface]] = []
 
         ancho_total = self.archivo.get_width()
         alto_total = self.archivo.get_height()

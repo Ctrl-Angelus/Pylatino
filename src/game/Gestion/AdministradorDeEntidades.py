@@ -12,7 +12,7 @@ class AdministradorDeEntidades:
         self.jugador = jugador
 
     def generar_oleada(self, cantidad: int):
-        for _ in range(20):
+        for _ in range(cantidad):
             x_aleatoria = random.randint(
                 self.contexto.escenario.tile_map.borde.left,
                 int(self.contexto.escenario.tile_map.borde.right - MEDIDA_DE_TILE_ESCALADO)

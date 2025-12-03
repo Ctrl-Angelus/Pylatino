@@ -17,26 +17,16 @@ class Jugador(EntidadBase):
 
         super().__init__((posicion_inicial_x, posicion_inicial_y), velocidad, url, contexto)
 
-
         self.controles = {
             "adelante": pygame.K_w,
             "atrás" : pygame.K_s,
             "click": pygame.MOUSEBUTTONDOWN
         }
 
-        self.direcciones = {
-            "adelante": 1,
-            "atras": -1
-        }
-
-        self.direccion = self.direcciones["adelante"]
-
-        self.modificador_de_velocidad = 1
         self.dash_activo = False
         self.inicio_dash = 0
         self.duracion_dash = 500 # milisegundos
 
-        self.colisiones = True
 
     def movimiento(self) -> None:
 
@@ -88,16 +78,3 @@ class Jugador(EntidadBase):
         if momento_actual - self.inicio_dash >= self.duracion_dash:
             self.dash_activo = False
             self.modificar_velocidad(1)
-
-    def modificar_velocidad(self, factor) -> None:
-        self.modificador_de_velocidad = factor
-
-    def alternar_colisiones(self) -> None:
-        self.colisiones = not self.colisiones
-
-    def tiene_colisiones(self) -> bool:
-        return self.colisiones
-
-    def modificar_direccion(self, direccion: str):
-        if direccion in self.direcciones:
-            self.direccion = self.direcciones[direccion]

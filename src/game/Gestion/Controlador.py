@@ -14,7 +14,8 @@ class Controlador:
         if evento.type == pygame.QUIT:
             self.contexto.terminar_game_loop()
 
-        if evento.type == self.jugador.controles["click"]:
+        if evento.type == pygame.MOUSEBUTTONDOWN:
+
             if evento.button == 1:
                 self.contexto.alternar_direccion_enemigos()
 
@@ -24,12 +25,14 @@ class Controlador:
             if evento.button == 3:
                 self.jugador_intangible()
 
+            if evento.button == 6:
+                self.contexto.limpiar_entidades()
+
     def verificar_controles(self):
         teclas_presionadas = pygame.key.get_pressed()
         dash = self.jugador.dash_activo
         adelante = teclas_presionadas[self.jugador.controles["adelante"]]
         atras = teclas_presionadas[self.jugador.controles["atrás"]]
-
 
         if dash:
             self.jugador.movimiento()
@@ -38,11 +41,11 @@ class Controlador:
             self.jugador.movimiento()
 
         elif atras:
-            self.jugador.modificar_direccion("atras")
+            self.jugador.modificar_direccion()
             self.jugador.modificar_velocidad(0.75)
             self.jugador.movimiento()
             self.jugador.modificar_velocidad(1)
-            self.jugador.modificar_direccion("adelante")
+            self.jugador.modificar_direccion()
 
     def realizar_dash(self):
         self.jugador.activar_dash()

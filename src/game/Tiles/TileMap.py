@@ -1,3 +1,4 @@
+from typing import Optional
 
 from pygame import Rect
 
@@ -16,7 +17,7 @@ class TileMap:
         for linea in archivo:
             self.datos.append(linea.split(","))
 
-        self.tile_set = TileSet(contexto, tile_set_url, MEDIDA_DE_TILE_ORIGINAL, MEDIDA_DE_TILE_ORIGINAL, 1)
+        self.tile_set = TileSet(tile_set_url, MEDIDA_DE_TILE_ORIGINAL, MEDIDA_DE_TILE_ORIGINAL, 1)
 
         self.tiles = []
 
@@ -28,18 +29,30 @@ class TileMap:
             -(self.height - DIMENSIONES_DEL_LIENZO[1]) / 2,
         )
 
-        y = self.posicion_inicial[1]
-        for linea in self.datos:
-            x = self.posicion_inicial[0]
-            fila = []
-            for tile in linea:
-                indice = int(tile) - 1
+        posicion_y = self.posicion_inicial[1]
+        for fila in range(len(self.datos)):
+            posicion_x = self.posicion_inicial[0]
+            fila_actual = []
+            for columna in range(len(self.datos[fila])):
+
                 lista = self.tile_set.tiles
-                tile = lista[0][indice]
-                fila.append(Tile(None, (1, 1), tile.copy(), int(x), int(y), contexto))
-                x += int(MEDIDA_DE_TILE_ESCALADO)
-            self.tiles.append(fila)
-            y += int(MEDIDA_DE_TILE_ESCALADO)
+                indice = int(self.datos[fila][columna]) - 1
+                imagen_nuevo_tile = lista[0][indice]
+                nuevo_tile = Tile(
+                    None,
+                    (1, 1),
+                    imagen_nuevo_tile.copy(),
+                    int(posicion_x),
+                    int(posicion_y),
+                    contexto,
+                    f"{fila} - {columna}"
+                )
+
+                fila_actual.append(nuevo_tile)
+                posicion_x += int(MEDIDA_DE_TILE_ESCALADO)
+
+            self.tiles.append(fila_actual)
+            posicion_y += int(MEDIDA_DE_TILE_ESCALADO)
 
         self.borde = Rect(
             self.posicion_inicial[0],
@@ -52,4 +65,16 @@ class TileMap:
         for linea in self.tiles:
             for tile in linea:
                 if tile.es_visible():
-                    self.contexto.escena.blit(tile.imagen, (tile.cuerpo.x - self.contexto.offset[0], tile.cuerpo.y - self.contexto.offset[1]))
+                    self.contexto.escena.blit(tile.imagen, tile.obtener_posicion_visual())
+
+    def obtener_tile_actual(self, entidad) -> Optional[Tile]:
+        x_mundo = entidad.cuerpo.centerx
+        y_mundo = entidad.cuerpo.centery
+
+        col = int((x_mundo - self.posicion_inicial[0]) // MEDIDA_DE_TILE_ESCALADO)
+        fila = int((y_mundo - self.posicion_inicial[1]) // MEDIDA_DE_TILE_ESCALADO)
+
+        if 0 <= fila < len(self.tiles) and 0 <= col < len(self.tiles[0]):
+            return self.tiles[fila][col]
+        else:
+            return None

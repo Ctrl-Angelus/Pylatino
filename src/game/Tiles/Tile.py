@@ -6,7 +6,7 @@ from src.game.Sprites.Sprite import Sprite
 
 
 class Tile(Sprite):
-    def __init__(self, ruta: Optional[str], tiles: Optional[tuple], imagen: Optional[Surface], x: int, y: int, contexto):
+    def __init__(self, ruta: Optional[str], tiles: Optional[tuple], imagen: Optional[Surface], x: int, y: int, contexto, id: str):
         super().__init__(ruta, tiles, imagen)
 
         self.x = x
@@ -17,11 +17,23 @@ class Tile(Sprite):
 
         self.contexto = contexto
 
-    def es_visible(self) -> bool:
-        visibilidad_x = self.contexto.offset[0] <= self.cuerpo.right and self.cuerpo.left <= DIMENSIONES_DEL_LIENZO[0] + self.contexto.offset[0]
+        self.id = id
 
-        visibilidad_y = self.contexto.offset[1] <= self.cuerpo.bottom and self.cuerpo.top <= DIMENSIONES_DEL_LIENZO[1] + self.contexto.offset[1]
+    def es_visible(self) -> bool:
+        offset_x_inicial = self.contexto.offset[0]
+        offset_y_inicial = self.contexto.offset[1]
+
+        offset_x_final = DIMENSIONES_DEL_LIENZO[0] + self.contexto.offset[0]
+        offset_y_final = DIMENSIONES_DEL_LIENZO[1] + self.contexto.offset[1]
+
+        visibilidad_x = offset_x_inicial <= self.cuerpo.right and self.cuerpo.left <= offset_x_final
+
+        visibilidad_y = offset_y_inicial <= self.cuerpo.bottom and self.cuerpo.top <= offset_y_final
+
         return visibilidad_x and visibilidad_y
+
+    def obtener_posicion_visual(self) -> tuple:
+        return self.cuerpo.x - self.contexto.offset[0], self.cuerpo.y - self.contexto.offset[1]
 
     def obtener_posicion(self) -> tuple:
         return self.cuerpo.centerx - self.contexto.offset[0], self.cuerpo.centery - self.contexto.offset[1]

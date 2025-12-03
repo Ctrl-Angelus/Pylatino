@@ -15,13 +15,12 @@ class Enemigo(EntidadBase):
     def movimiento(self) -> None:
         if self.contexto.movimiento_enemigos_activo:
             movimiento_x, movimiento_y = movimiento_relativo(
-                self.velocidad,
+                self.velocidad * self.modificador_de_velocidad,
                 self.cuerpo.center,
                 self.jugador.cuerpo.center
             )
 
-            movimiento_x *= self.contexto.direccion_enemigos
-            movimiento_y *= self.contexto.direccion_enemigos
+            movimiento_x *= self.direccion
+            movimiento_y *= self.direccion
 
             colisiones_con_entidades(self, movimiento_x, movimiento_y, self.contexto.entidades)
-
