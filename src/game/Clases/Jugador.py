@@ -43,10 +43,13 @@ class Jugador(EntidadBase):
         if self.dash_activo:
             self.dash()
 
+        mouse_x_mundo = pygame.mouse.get_pos()[0] + self.contexto.offset[0]
+        mouse_y_mundo = pygame.mouse.get_pos()[1] + self.contexto.offset[1]
+
         movimiento_x, movimiento_y = movimiento_relativo(
             self.velocidad * self.modificador_de_velocidad,
-                self.obtener_posicion(),
-                pygame.mouse.get_pos()
+                self.cuerpo.center,
+            (mouse_x_mundo, mouse_y_mundo)
             )
 
         movimiento_x *= self.direccion

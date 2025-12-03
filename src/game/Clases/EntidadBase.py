@@ -33,7 +33,19 @@ class EntidadBase:
         self.cuerpo.move_ip(movimiento_x, movimiento_y)
 
     def es_visible(self) -> bool:
-        visibilidad_x = self.contexto.offset[0] <= self.cuerpo.right and self.cuerpo.left <= DIMENSIONES_DEL_LIENZO[0] + self.contexto.offset[0]
+        offset_x_inicial = self.contexto.offset[0]
+        offset_y_inicial = self.contexto.offset[1]
 
-        visibilidad_y = self.contexto.offset[1] <= self.cuerpo.bottom and self.cuerpo.top <= DIMENSIONES_DEL_LIENZO[1] + self.contexto.offset[1]
+        derecha = self.cuerpo.right
+        izquierda = self.cuerpo.left
+        arriba = self.cuerpo.top
+        abajo = self.cuerpo.bottom
+
+        offset_x_final = DIMENSIONES_DEL_LIENZO[0] + self.contexto.offset[0]
+        offset_y_final = DIMENSIONES_DEL_LIENZO[1] + self.contexto.offset[1]
+
+        visibilidad_x = derecha >= offset_x_inicial and izquierda <= offset_x_final
+
+        visibilidad_y = abajo >= offset_y_inicial and arriba <= offset_y_final
+
         return visibilidad_x and visibilidad_y

@@ -16,8 +16,8 @@ class Enemigo(EntidadBase):
         if self.contexto.movimiento_enemigos_activo:
             movimiento_x, movimiento_y = movimiento_relativo(
                 self.velocidad,
-                self.obtener_posicion(),
-                self.jugador.obtener_posicion()
+                self.cuerpo.center,
+                self.jugador.cuerpo.center
             )
 
             movimiento_x *= self.contexto.direccion_enemigos
