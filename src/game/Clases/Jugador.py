@@ -1,7 +1,7 @@
 import pygame
 
 from src.game.Clases.EntidadBase import EntidadBase
-from src.game.Colisiones.Colisiones_entidades import colision_tiles, colisiones
+from src.game.Colisiones.Colisiones_entidades import colision_tiles, colisiones_con_empuje, colisiones
 from src.game.Movimiento.Movimiento import movimiento_relativo
 from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, VELOCIDAD, DIMENSIONES_DEL_LIENZO
 from src.game.Gestion.Contexto import ContextoDelJuego
@@ -49,7 +49,12 @@ class Jugador(EntidadBase):
 
         if self.colisiones:
             movimiento_x, movimiento_y = colision_tiles(self, movimiento_x, movimiento_y, self.contexto)
-            colisiones(self, movimiento_x, movimiento_y, self.contexto.entidades)
+
+            if self.dash_activo:
+                colisiones_con_empuje(self, movimiento_x, movimiento_y, self.contexto.entidades)
+            else:
+                colisiones(self, movimiento_x, movimiento_y, self.contexto.entidades)
+
 
             tile_actual = self.contexto.escenario.tile_map.obtener_tile_actual(self.cuerpo)
 
@@ -58,7 +63,6 @@ class Jugador(EntidadBase):
 
             elif tile_actual.tiene_accion:
                 tile_actual.accionar()
-
         else:
             self.mover(movimiento_x, movimiento_y)
 
