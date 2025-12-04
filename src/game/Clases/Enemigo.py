@@ -36,8 +36,8 @@ class Enemigo(EntidadBase):
                     self.jugador.cuerpo.center
                 )
 
-            movimiento_x *= self.direccion
-            movimiento_y *= self.direccion
+                movimiento_x *= self.direccion
+                movimiento_y *= self.direccion
 
             movimiento_x, movimiento_y = colision_tiles(self, movimiento_x, movimiento_y, self.contexto)
             colisiones(self, movimiento_x, movimiento_y, self.contexto.entidades)
