@@ -13,7 +13,7 @@ def main():
     jugador = Jugador(contexto)
 
     administrador_de_entidades = AdministradorDeEntidades(contexto, jugador)
-    administrador_de_entidades.generar_oleada(0)
+    administrador_de_entidades.generar_oleada(10)
     contexto.entidades.append(jugador)
 
     controlador = Controlador(contexto, jugador)

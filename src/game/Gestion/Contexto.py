@@ -30,6 +30,7 @@ class ContextoDelJuego:
     def alternar_direccion_enemigos(self):
         for entidad in self.entidades:
             entidad.modificar_direccion()
+        self.entidades[-1].modificar_direccion()
 
     def alternar_movimiento_enemigos(self):
         self.movimiento_enemigos_activo = not self.movimiento_enemigos_activo

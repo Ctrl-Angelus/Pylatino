@@ -2,6 +2,7 @@ import pygame
 from pygame import Event
 
 from src.game.Clases import Jugador
+from src.game.Colisiones.Colisiones_entidades import posibles_colisiones_jugador
 from src.game.Gestion.Contexto import ContextoDelJuego
 
 
@@ -23,7 +24,17 @@ class Controlador:
                 self.realizar_dash()
 
             if evento.button == 3:
-                self.jugador_intangible()
+                if self.jugador.es_intangible():
+
+                    posicion_libre = posibles_colisiones_jugador(self.jugador, self.contexto)
+
+                    if posicion_libre:
+                        self.jugador_intangible()
+                    else:
+                        print("Esta área tiene colisiones o está fuera del mapa")
+
+                else:
+                    self.jugador_intangible()
 
             if evento.button == 6:
                 self.contexto.limpiar_entidades()
@@ -53,3 +64,4 @@ class Controlador:
     def jugador_intangible(self):
         self.contexto.alternar_movimiento_enemigos()
         self.jugador.alternar_colisiones()
+        self.jugador.intangible = not self.jugador.intangible

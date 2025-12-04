@@ -6,7 +6,7 @@ from src.game.Sprites.Sprite import Sprite
 
 
 class Tile(Sprite):
-    def __init__(self, ruta: Optional[str], tiles: Optional[tuple], imagen: Optional[Surface], x: int, y: int, contexto, id: str, colision: bool):
+    def __init__(self, ruta: Optional[str], tiles: Optional[tuple], imagen: Optional[Surface], x: int, y: int, contexto, id: str, colision: bool, tiene_accion: bool):
         super().__init__(ruta, tiles, imagen)
 
         self.x = x
@@ -19,6 +19,7 @@ class Tile(Sprite):
 
         self.id = id
         self.colision = colision
+        self.tiene_accion = tiene_accion
 
     def es_visible(self) -> bool:
         offset_x_inicial = self.contexto.offset[0]
@@ -38,3 +39,7 @@ class Tile(Sprite):
 
     def obtener_posicion(self) -> tuple:
         return self.cuerpo.centerx - self.contexto.offset[0], self.cuerpo.centery - self.contexto.offset[1]
+
+class TileConAccion(Tile):
+    def accion(self):
+        print(f"accion realizada por: {self.id}")

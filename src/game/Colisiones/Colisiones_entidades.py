@@ -40,7 +40,7 @@ def colisiones(entidad, movimiento_x: float, movimiento_y: float, entidades: lis
 
             entidad.mover(0, correccion_y)
 
-def colision_tiles(entidad, movimiento_x: float, movimiento_y: float, contexto: ContextoDelJuego):
+def colision_tiles(entidad, movimiento_x: float, movimiento_y: float, contexto: ContextoDelJuego) -> tuple:
     simulacion_x = entidad.cuerpo.move(movimiento_x, 0)
 
     correccion_x = 0
@@ -58,10 +58,7 @@ def colision_tiles(entidad, movimiento_x: float, movimiento_y: float, contexto: 
             elif movimiento_x < 0:
                 correccion_x = max(correccion_x, tile.cuerpo.right - simulacion_x.left)
 
-    entidad.mover(movimiento_x + correccion_x, 0)
-
-
-    simulacion_y = entidad.cuerpo.move(0, movimiento_y)
+    simulacion_y = entidad.cuerpo.move(movimiento_x + correccion_x, movimiento_y)
 
     correccion_y = 0
 
@@ -78,4 +75,38 @@ def colision_tiles(entidad, movimiento_x: float, movimiento_y: float, contexto: 
             elif movimiento_y < 0:
                 correccion_y = max(correccion_y, tile.cuerpo.bottom - simulacion_y.top)
 
-    entidad.mover(0, movimiento_y + correccion_y)
+    return movimiento_x + correccion_x, movimiento_y + correccion_y
+
+
+def posibles_colisiones(rect, contexto: ContextoDelJuego):
+    tiles = contexto.escenario.tile_map.obtener_tiles_cercanos(rect)
+    tiles_seguros = 0
+    entidades_seguras = 0
+    for tile in tiles:
+        if not tile.colision or not tile.cuerpo.colliderect(rect):
+            tiles_seguros += 1
+
+    for entidad_lista in contexto.entidades:
+        if not entidad_lista.cuerpo.colliderect(rect):
+            entidades_seguras += 1
+
+    return tiles_seguros == len(tiles) and entidades_seguras == len(contexto.entidades)
+
+def posibles_colisiones_jugador(jugador, contexto: ContextoDelJuego):
+    tile_actual = contexto.escenario.tile_map.obtener_tile_actual(jugador.cuerpo)
+    if tile_actual is None:
+        return False
+
+    tiles = contexto.escenario.tile_map.obtener_tiles_cercanos(jugador.cuerpo)
+    tiles_seguros = 0
+    entidades_seguras = 0
+
+    for tile in tiles:
+        if not tile.colision or not tile.cuerpo.colliderect(jugador.cuerpo):
+            tiles_seguros += 1
+
+    for entidad_lista in contexto.entidades:
+        if not entidad_lista.cuerpo.colliderect(jugador.cuerpo) or jugador is entidad_lista:
+            entidades_seguras += 1
+
+    return tiles_seguros == len(tiles) and entidades_seguras == len(contexto.entidades)

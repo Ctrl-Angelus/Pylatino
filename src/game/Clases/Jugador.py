@@ -1,7 +1,7 @@
 import pygame
 
 from src.game.Clases.EntidadBase import EntidadBase
-from src.game.Colisiones.Colisiones_entidades import colision_tiles
+from src.game.Colisiones.Colisiones_entidades import colision_tiles, colisiones
 from src.game.Movimiento.Movimiento import movimiento_relativo
 from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, VELOCIDAD, DIMENSIONES_DEL_LIENZO
 from src.game.Gestion.Contexto import ContextoDelJuego
@@ -27,6 +27,8 @@ class Jugador(EntidadBase):
         self.inicio_dash = 0
         self.duracion_dash = 500 # milisegundos
 
+        self.intangible = False
+
 
     def movimiento(self) -> None:
 
@@ -46,7 +48,16 @@ class Jugador(EntidadBase):
         movimiento_y *= self.direccion
 
         if self.colisiones:
-            colision_tiles(self, movimiento_x, movimiento_y, self.contexto)
+            movimiento_x, movimiento_y = colision_tiles(self, movimiento_x, movimiento_y, self.contexto)
+            colisiones(self, movimiento_x, movimiento_y, self.contexto.entidades)
+
+            tile_actual = self.contexto.escenario.tile_map.obtener_tile_actual(self.cuerpo)
+
+            if tile_actual is None:
+                self.contexto.ejecutando = False
+
+            elif tile_actual.tiene_accion:
+                tile_actual.accion()
 
         else:
             self.mover(movimiento_x, movimiento_y)
@@ -78,3 +89,6 @@ class Jugador(EntidadBase):
         if momento_actual - self.inicio_dash >= self.duracion_dash:
             self.dash_activo = False
             self.modificar_velocidad(1)
+
+    def es_intangible(self) -> bool:
+        return self.intangible

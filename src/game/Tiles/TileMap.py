@@ -3,7 +3,7 @@ from typing import Optional
 from pygame import Rect
 
 from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, DIMENSIONES_DEL_LIENZO, MEDIDA_DE_TILE_ORIGINAL
-from src.game.Tiles.Tile import Tile
+from src.game.Tiles.Tile import Tile, TileConAccion
 from src.game.Tiles.TileSet import TileSet
 
 
@@ -39,18 +39,34 @@ class TileMap:
                 material = int(self.datos[fila][columna])
                 indice =  material - 1
                 colision = True if material == 1 else False
+                accion = True if material == 2 else False
 
                 imagen_nuevo_tile = lista[0][indice]
-                nuevo_tile = Tile(
-                    None,
-                    (1, 1),
-                    imagen_nuevo_tile.copy(),
-                    int(posicion_x),
-                    int(posicion_y),
-                    contexto,
-                    f"{fila} - {columna}",
-                    colision
-                )
+
+                if accion:
+                    nuevo_tile = TileConAccion(
+                        None,
+                        (1, 1),
+                        imagen_nuevo_tile.copy(),
+                        int(posicion_x),
+                        int(posicion_y),
+                        contexto,
+                        f"{fila} - {columna}",
+                        colision,
+                        accion
+                    )
+                else:
+                    nuevo_tile = Tile(
+                        None,
+                        (1, 1),
+                        imagen_nuevo_tile.copy(),
+                        int(posicion_x),
+                        int(posicion_y),
+                        contexto,
+                        f"{fila} - {columna}",
+                        colision,
+                        accion
+                    )
 
                 fila_actual.append(nuevo_tile)
                 posicion_x += int(MEDIDA_DE_TILE_ESCALADO)
