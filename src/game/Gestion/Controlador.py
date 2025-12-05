@@ -20,9 +20,6 @@ class Controlador:
             if evento.button == 1:
                 self.contexto.alternar_direccion_enemigos()
 
-            if evento.button == 2:
-                self.realizar_dash()
-
             if evento.button == 3:
                 if self.jugador.es_intangible():
 
@@ -44,6 +41,9 @@ class Controlador:
         dash = self.jugador.dash_activo
         adelante = teclas_presionadas[self.jugador.controles["adelante"]]
         atras = teclas_presionadas[self.jugador.controles["atrás"]]
+
+        if teclas_presionadas[pygame.K_SPACE]:
+            self.realizar_dash()
 
         if dash:
             self.jugador.movimiento()

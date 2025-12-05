@@ -37,8 +37,10 @@ def main():
         if jugador.vida > 0:
             contexto.escena.blit(jugador.sprite, jugador.obtener_posicion_visual())
 
-        else:
-            del jugador
+        contexto.escena.blit(
+            contexto.fuente.render(f"Vida: {jugador.vida}", True, (255, 255, 255)),
+            (10, 10)
+        )
 
         pygame.display.flip()
         contexto.reloj.tick(FPS)

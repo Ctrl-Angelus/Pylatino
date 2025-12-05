@@ -28,6 +28,7 @@ class Jugador(EntidadBase):
         self.duracion_dash = 500 # milisegundos
 
         self.intangible = False
+        self.puntos_de_daño = 5
 
 
 
