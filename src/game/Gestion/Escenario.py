@@ -1,4 +1,4 @@
-
+from src.game.Gestion.Parametros import CANTIDAD_DE_TILES
 from src.game.Sprites.SpriteSheet import SpriteSheet
 from src.game.Tiles.TileMap import TileMap
 
@@ -7,10 +7,20 @@ class Escenario:
     def __init__(self, contexto):
         self.contexto = contexto
 
-        self.tile_map = TileMap("src/recursos/tilemap/tilemap-1.txt", "src/recursos/tilemap/tileset.png", contexto)
+        self.tile_map = TileMap(
+            "src/recursos/tilemap/tilemap-1.txt",
+            "src/recursos/tilemap/tileset.png",
+            contexto
+        )
 
         self.fondo_estatico = SpriteSheet("src/recursos/fondo-estatico.png")
-        self.fondo_estatico.generar_frames(4, 2, (60, 60), 1)
+        self.fondo_estatico.generar_frames(
+            4,
+            2,
+            (60, 60),
+            (CANTIDAD_DE_TILES, CANTIDAD_DE_TILES),
+            1
+        )
         self.fondo_estatico.iniciar_animacion()
 
 

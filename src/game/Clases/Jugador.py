@@ -5,8 +5,10 @@ from src.game.Colisiones.Colisiones_entidades import colisiones
 from src.game.Colisiones.Colisiones_tiles import colisiones_tiles
 from src.game.Colisiones.Colisiones_con_empuje import colisiones_con_empuje
 from src.game.Movimiento.Movimiento import movimiento_relativo
-from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, VELOCIDAD, DIMENSIONES_DEL_LIENZO
+from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, VELOCIDAD, DIMENSIONES_DEL_LIENZO, \
+    MEDIDA_DE_TILE_ORIGINAL
 from src.game.Gestion.Contexto import ContextoDelJuego
+from src.game.Sprites.SpriteSheet import SpriteSheet
 
 
 class Jugador(EntidadBase):
@@ -18,6 +20,16 @@ class Jugador(EntidadBase):
         url = "src/recursos/jugador.png"
 
         super().__init__((posicion_inicial_x, posicion_inicial_y), velocidad, url, contexto)
+
+        self.spritesheet = SpriteSheet("src/recursos/jugador-spritesheet.png")
+        self.spritesheet.generar_frames(
+            2,
+            1,
+            (MEDIDA_DE_TILE_ORIGINAL, MEDIDA_DE_TILE_ORIGINAL),
+            (1, 1),
+            1
+        )
+        self.spritesheet.iniciar_animacion()
 
         self.controles = {
             "adelante": pygame.K_w,
@@ -106,3 +118,14 @@ class Jugador(EntidadBase):
     def morir(self):
         print("Estás muerto")
         self.contexto.terminar_game_loop()
+
+    def mostrar(self):
+        if self.entidad_viva:
+            if self.invertido:
+                self.contexto.escena.blit(
+                    pygame.transform.flip(self.spritesheet.obtener_sprite_actual().imagen, True, False),
+                    self.obtener_posicion_visual())
+                self.spritesheet.animacion(0)
+            else:
+                self.contexto.escena.blit(self.spritesheet.obtener_sprite_actual().imagen, self.obtener_posicion_visual())
+                self.spritesheet.animacion(0)

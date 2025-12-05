@@ -38,6 +38,9 @@ class EntidadBase:
         self.modificador_de_velocidad = 1
         self.direccion = 1
         self.colisiones = True
+        self.entidad_viva = True
+        self.tiene_movimiento = True
+        self.invertido = False
 
     def modificar_velocidad(self, factor) -> None:
         self.modificador_de_velocidad = factor

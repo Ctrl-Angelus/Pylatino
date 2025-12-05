@@ -22,7 +22,7 @@ class Enemigo(EntidadBase):
 
     def movimiento(self) -> None:
 
-        if self.contexto.movimiento_enemigos_activo:
+        if self.tiene_movimiento:
             if self.empuje:
                 self.empujar()
                 movimiento_x = self.empuje_x
@@ -33,13 +33,16 @@ class Enemigo(EntidadBase):
                     self.velocidad * self.modificador_de_velocidad,
                     self.cuerpo.center,
                     self.contexto.jugador.cuerpo.center,
-                    DIMENSIONES_DEL_LIENZO[0] / 2
+                    DIMENSIONES_DEL_LIENZO[0] * 3/4
                 )
 
                 movimiento_x *= self.direccion
                 movimiento_y *= self.direccion
 
             movimiento_x, movimiento_y = colisiones_tiles(self, movimiento_x, movimiento_y, self.contexto)
+
+            self.invertido = True if movimiento_x < 0 else False
+
             colisiones(self, self.contexto, movimiento_x, movimiento_y)
 
             tile_actual = self.contexto.escenario.tile_map.obtener_tile_actual(self.cuerpo)
@@ -65,3 +68,12 @@ class Enemigo(EntidadBase):
 
     def morir(self):
         self.contexto.entidades.remove(self)
+
+    def mostrar(self):
+        if self.invertido:
+            self.contexto.escena.blit(
+                pygame.transform.flip(self.sprite, True, False),
+                self.obtener_posicion_visual()
+            )
+        else:
+            self.contexto.escena.blit(self.sprite, self.obtener_posicion_visual())

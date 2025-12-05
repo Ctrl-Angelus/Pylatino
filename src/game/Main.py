@@ -30,14 +30,14 @@ def main():
         contexto.escenario.mostrar()
 
         for entidad in contexto.entidades:
-            if entidad is not jugador:
-                entidad.movimiento()
+            if entidad is jugador:
+                continue
+            entidad.movimiento()
 
             if entidad.es_visible():
-                contexto.escena.blit(entidad.sprite, entidad.obtener_posicion_visual())
+                entidad.mostrar()
 
-        if jugador.vida > 0:
-            contexto.escena.blit(jugador.sprite, jugador.obtener_posicion_visual())
+        jugador.mostrar()
 
         contexto.escena.blit(
             contexto.fuente.render(f"Vida: {jugador.vida} / {jugador.vida_total}", True, (255, 255, 255)),

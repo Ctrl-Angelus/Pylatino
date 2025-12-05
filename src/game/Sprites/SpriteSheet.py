@@ -2,7 +2,6 @@ import pygame.image
 from pygame import Surface
 
 from src.game.Sprites.Sprite import Sprite
-from src.game.Gestion.Parametros import CANTIDAD_DE_TILES
 
 class SpriteSheet:
     def __init__(self, url: str):
@@ -15,7 +14,7 @@ class SpriteSheet:
         self.momento_actual_animacion = 0
         self.animacion_activa = False
 
-    def generar_frames(self, cantidad_de_columnas: int, cantidad_de_filas: int, dimensiones_del_sprite: tuple, espaciado):
+    def generar_frames(self, cantidad_de_columnas: int, cantidad_de_filas: int, dimensiones_del_sprite: tuple, tiles: tuple, espaciado):
         self.matriz_de_sprites = []
 
         coordenada_y = 0
@@ -24,7 +23,15 @@ class SpriteSheet:
             fila = []
             coordenada_x = 0
             for _ in range(cantidad_de_columnas):
-                fila.append(obtener_sprite(self.imagen, coordenada_x, coordenada_y, dimensiones_del_sprite[0], dimensiones_del_sprite[1]))
+                sprite = obtener_sprite(
+                    self.imagen,
+                    coordenada_x,
+                    coordenada_y,
+                    dimensiones_del_sprite[0],
+                    dimensiones_del_sprite[1],
+                    tiles
+                )
+                fila.append(sprite)
                 coordenada_x += dimensiones_del_sprite[0] + espaciado
 
             self.matriz_de_sprites.append(fila)
@@ -55,7 +62,7 @@ class SpriteSheet:
 
                 self.inicio_animacion = pygame.time.get_ticks()
 
-def obtener_sprite(spritesheet: Surface, x, y, ancho, alto) -> Sprite:
+def obtener_sprite(spritesheet: Surface, x, y, ancho, alto, tiles: tuple) -> Sprite:
     rect = pygame.Rect(x, y, ancho, alto)
     superficie = spritesheet.subsurface(rect).copy()
-    return Sprite(None, (CANTIDAD_DE_TILES, CANTIDAD_DE_TILES), superficie)
+    return Sprite(None, (tiles[0], tiles[1]), superficie)

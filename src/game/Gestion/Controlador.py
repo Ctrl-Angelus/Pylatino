@@ -4,6 +4,7 @@ from pygame import Event
 from src.game.Clases import Jugador
 from src.game.Colisiones.Posibles_colisiones import posibles_colisiones_jugador
 from src.game.Gestion.Contexto import ContextoDelJuego
+from src.game.Movimiento.Angulo import calcular_angulo
 
 
 class Controlador:
@@ -14,6 +15,14 @@ class Controlador:
     def verificar_eventos(self, evento: Event):
         if evento.type == pygame.QUIT:
             self.contexto.terminar_game_loop()
+
+        if evento.type == pygame.MOUSEMOTION:
+            mouse_x_mundo = pygame.mouse.get_pos()[0] + self.contexto.offset[0]
+            mouse_y_mundo = pygame.mouse.get_pos()[1] + self.contexto.offset[1]
+
+            angulo = calcular_angulo(self.jugador.cuerpo.center, (mouse_x_mundo, mouse_y_mundo))
+
+            self.jugador.invertido = angulo > 90 or angulo < -90
 
         if evento.type == pygame.MOUSEBUTTONDOWN:
 
