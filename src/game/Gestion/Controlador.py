@@ -2,7 +2,7 @@ import pygame
 from pygame import Event
 
 from src.game.Clases import Jugador
-from src.game.Colisiones.Colisiones_entidades import posibles_colisiones_jugador
+from src.game.Colisiones.Posibles_colisiones import posibles_colisiones_jugador
 from src.game.Gestion.Contexto import ContextoDelJuego
 
 

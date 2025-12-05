@@ -27,9 +27,10 @@ class EntidadBase:
         self.contexto = contexto
 
         self.vida = 20
+        self.vida_total = self.vida
         self.puntos_de_daño = 2
 
-        self.duracion_inmunidad = 500
+        self.duracion_inmunidad = 1000
         self.inmunidad = False
         self.inmunidad_inicio = 0
         self.inmunidad_actual = 0

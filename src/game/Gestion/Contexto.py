@@ -12,7 +12,7 @@ class ContextoDelJuego:
         self.ejecutando = True
         self.offset = [0, 0]
 
-        self.fuente = pygame.font.Font("src/recursos/fuente/Medodica.otf", 30)
+        self.fuente = pygame.font.Font("src/recursos/fuente/Medodica.otf", 60)
 
         self.escena: Surface = pygame.display.set_mode(DIMENSIONES_DEL_LIENZO)
         self.reloj = pygame.time.Clock()
@@ -22,6 +22,8 @@ class ContextoDelJuego:
         pygame.display.set_caption(TITULO)
 
         self.escenario = Escenario(self)
+        self.administrador_de_entidades = None
+        self.jugador = None
 
     def limpiar_entidades(self):
         self.entidades = []

@@ -4,16 +4,18 @@ from src.game.Gestion.AdministradorDeEntidades import AdministradorDeEntidades
 from src.game.Clases.Jugador import Jugador
 from src.game.Gestion.Contexto import ContextoDelJuego
 from src.game.Gestion.Controlador import Controlador
-from src.game.Gestion.Parametros import FPS
+from src.game.Gestion.Parametros import FPS, DIMENSIONES_DEL_LIENZO
 
 
 def main():
     contexto = ContextoDelJuego()
 
     jugador = Jugador(contexto)
+    contexto.jugador = jugador
 
-    administrador_de_entidades = AdministradorDeEntidades(contexto, jugador)
-    administrador_de_entidades.generar_oleada(10)
+    administrador_de_entidades = AdministradorDeEntidades(contexto)
+    contexto.administrador_de_entidades = administrador_de_entidades
+    contexto.administrador_de_entidades.generar_oleada(10)
     contexto.entidades.append(jugador)
 
     controlador = Controlador(contexto, jugador)
@@ -38,9 +40,16 @@ def main():
             contexto.escena.blit(jugador.sprite, jugador.obtener_posicion_visual())
 
         contexto.escena.blit(
-            contexto.fuente.render(f"Vida: {jugador.vida}", True, (255, 255, 255)),
+            contexto.fuente.render(f"Vida: {jugador.vida} / {jugador.vida_total}", True, (255, 255, 255)),
             (10, 10)
         )
+        contexto.escena.blit(
+            contexto.fuente.render(f"Enemigos: {len(contexto.entidades) - 1}", True, (255, 255, 255)),
+            (10, DIMENSIONES_DEL_LIENZO[1] - contexto.fuente.get_height() - 10)
+        )
+        if len(contexto.entidades) == 1:
+            print("Ganaste la ronda")
+            contexto.administrador_de_entidades.generar_oleada(10)
 
         pygame.display.flip()
         contexto.reloj.tick(FPS)

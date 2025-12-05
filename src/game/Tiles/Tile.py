@@ -60,4 +60,5 @@ class TileConAccion(Tile):
                 self.accionado = False
 
     def accion(self):
-        print(f"accion realizada por: {self.id}")
+        self.contexto.jugador.vida = self.contexto.jugador.vida_total
+        print("Curado")

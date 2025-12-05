@@ -1,7 +1,9 @@
 import pygame
 
 from src.game.Clases.EntidadBase import EntidadBase
-from src.game.Colisiones.Colisiones_entidades import colision_tiles, colisiones_con_empuje, colisiones
+from src.game.Colisiones.Colisiones_entidades import colisiones
+from src.game.Colisiones.Colisiones_tiles import colisiones_tiles
+from src.game.Colisiones.Colisiones_con_empuje import colisiones_con_empuje
 from src.game.Movimiento.Movimiento import movimiento_relativo
 from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, VELOCIDAD, DIMENSIONES_DEL_LIENZO
 from src.game.Gestion.Contexto import ContextoDelJuego
@@ -43,25 +45,26 @@ class Jugador(EntidadBase):
         movimiento_x, movimiento_y = movimiento_relativo(
             self.velocidad * self.modificador_de_velocidad,
                 self.cuerpo.center,
-            (mouse_x_mundo, mouse_y_mundo)
+                (mouse_x_mundo, mouse_y_mundo),
+                None
             )
 
         movimiento_x *= self.direccion
         movimiento_y *= self.direccion
 
         if self.colisiones:
-            movimiento_x, movimiento_y = colision_tiles(self, movimiento_x, movimiento_y, self.contexto)
+            movimiento_x, movimiento_y = colisiones_tiles(self, movimiento_x, movimiento_y, self.contexto)
 
             if self.dash_activo:
                 colisiones_con_empuje(self, movimiento_x, movimiento_y, self.contexto.entidades)
             else:
-                colisiones(self, self, movimiento_x, movimiento_y, self.contexto.entidades)
+                colisiones(self, self.contexto, movimiento_x, movimiento_y)
 
 
             tile_actual = self.contexto.escenario.tile_map.obtener_tile_actual(self.cuerpo)
 
             if tile_actual is None:
-                self.contexto.ejecutando = False
+                self.morir()
 
             elif tile_actual.tiene_accion:
                 tile_actual.accionar()
@@ -102,4 +105,4 @@ class Jugador(EntidadBase):
 
     def morir(self):
         print("Estás muerto")
-        self.contexto.ejecutando = False
+        self.contexto.terminar_game_loop()
