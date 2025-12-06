@@ -34,7 +34,7 @@ class AdministradorDeEntidades:
                 Enemigo(
                     posicion_inicial,
                     velocidad_enemigos,
-                    "src/recursos/enemigo.png",
+                    "src/recursos/enemigo-spritesheet.png",
                     self.contexto
                 )
             )

@@ -2,17 +2,16 @@ import pygame.time
 
 from src.game.Clases.EntidadBase import EntidadBase
 from src.game.Gestion.Contexto import ContextoDelJuego
-from src.game.Gestion.Parametros import DIMENSIONES_DEL_LIENZO, MEDIDA_DE_TILE_ORIGINAL
+from src.game.Gestion.Parametros import DIMENSIONES_DEL_LIENZO
 from src.game.Movimiento.Movimiento import movimiento_relativo
 from src.game.Colisiones.Colisiones_entidades import colisiones
 from src.game.Colisiones.Colisiones_tiles import colisiones_tiles
-from src.game.Sprites.SpriteSheet import SpriteSheet
 
 
 class Enemigo(EntidadBase):
 
     def __init__(self, posicion_inicial: tuple, velocidad: float, url: str, contexto: ContextoDelJuego):
-        super().__init__(posicion_inicial, velocidad, url, contexto)
+        super().__init__(posicion_inicial, velocidad, url, contexto, 3, 4)
 
         self.empuje = False
         self.empuje_x = 0
@@ -23,16 +22,6 @@ class Enemigo(EntidadBase):
         self.muerte_duracion = 2000
         self.muerte_inicio = 0
         self.muerte_actual = 0
-
-        self.spritesheet = SpriteSheet("src/recursos/enemigo-spritesheet.png")
-        self.spritesheet.generar_frames(
-            4,
-            3,
-            (MEDIDA_DE_TILE_ORIGINAL, MEDIDA_DE_TILE_ORIGINAL),
-            (1, 1),
-            1
-        )
-        self.spritesheet.iniciar_animacion()
 
     def movimiento(self) -> None:
 

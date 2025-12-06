@@ -26,7 +26,7 @@ class TileMap:
 
         self.posicion_inicial = (
             -(self.width - DIMENSIONES_DEL_LIENZO[0]) / 2,
-            -(self.height - DIMENSIONES_DEL_LIENZO[1]) / 2,
+            -(self.height - DIMENSIONES_DEL_LIENZO[1]),
         )
 
         posicion_y = self.posicion_inicial[1]
@@ -43,8 +43,8 @@ class TileMap:
                     continue
 
                 indice =  material - 1
-                colision = True if (material in (1, 2, 3, 9)) else False
-                accion = True if material == 8 else False
+                colision = True if (material in (1, 2, 3, 5, 6, 12)) else False
+                accion = True if material == 10 else False
 
                 imagen_nuevo_tile = lista[0][indice]
 
@@ -59,7 +59,7 @@ class TileMap:
                         f"{fila} - {columna}",
                         colision,
                         accion,
-                        lista[0][6].copy()
+                        lista[0][9].copy()
                     )
                 else:
                     nuevo_tile = Tile(

@@ -5,10 +5,8 @@ from src.game.Colisiones.Colisiones_entidades import colisiones
 from src.game.Colisiones.Colisiones_tiles import colisiones_tiles
 from src.game.Colisiones.Colisiones_con_empuje import colisiones_con_empuje
 from src.game.Movimiento.Movimiento import movimiento_relativo
-from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, VELOCIDAD, DIMENSIONES_DEL_LIENZO, \
-    MEDIDA_DE_TILE_ORIGINAL
+from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, VELOCIDAD, DIMENSIONES_DEL_LIENZO
 from src.game.Gestion.Contexto import ContextoDelJuego
-from src.game.Sprites.SpriteSheet import SpriteSheet
 
 
 class Jugador(EntidadBase):
@@ -17,19 +15,10 @@ class Jugador(EntidadBase):
         posicion_inicial_x = contexto.escena.get_rect().center[0] - MEDIDA_DE_TILE_ESCALADO / 2
         posicion_inicial_y = contexto.escena.get_rect().center[1] - MEDIDA_DE_TILE_ESCALADO / 2
         velocidad = VELOCIDAD
-        url = "src/recursos/jugador.png"
+        url = "src/recursos/jugador-spritesheet.png"
 
-        super().__init__((posicion_inicial_x, posicion_inicial_y), velocidad, url, contexto)
+        super().__init__((posicion_inicial_x, posicion_inicial_y), velocidad, url, contexto, 4, 4)
 
-        self.spritesheet = SpriteSheet("src/recursos/jugador-spritesheet.png")
-        self.spritesheet.generar_frames(
-            4,
-            4,
-            (MEDIDA_DE_TILE_ORIGINAL, MEDIDA_DE_TILE_ORIGINAL),
-            (1, 1),
-            1
-        )
-        self.spritesheet.iniciar_animacion()
 
         self.controles = {
             "adelante": pygame.K_w,

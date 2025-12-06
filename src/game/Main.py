@@ -15,10 +15,14 @@ def main():
 
     administrador_de_entidades = AdministradorDeEntidades(contexto)
     contexto.administrador_de_entidades = administrador_de_entidades
-    contexto.administrador_de_entidades.generar_oleada(10)
+    contexto.administrador_de_entidades.generar_oleada(0)
     contexto.entidades.append(jugador)
 
     controlador = Controlador(contexto, jugador)
+
+    pygame.mixer.music.load("src/recursos/audio/background.mp3")
+    pygame.mixer.music.set_volume(0.2)
+    pygame.mixer.music.play()
 
     while contexto.ejecutando:
 
@@ -51,12 +55,13 @@ def main():
             contexto.fuente.render(f"Enemigos: {len(contexto.entidades) - 1}", True, (255, 255, 255)),
             (10, DIMENSIONES_DEL_LIENZO[1] - contexto.fuente.get_height() - 10)
         )
-        if len(contexto.entidades) == 1:
-            print("Ganaste la ronda")
-            contexto.administrador_de_entidades.generar_oleada(10)
+
 
         pygame.display.flip()
         contexto.reloj.tick(FPS)
+
+        if not pygame.mixer.music.get_busy():
+            pygame.mixer.music.rewind()
 
     pygame.quit()
 
