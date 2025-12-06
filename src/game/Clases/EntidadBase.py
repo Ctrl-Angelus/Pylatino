@@ -8,8 +8,8 @@ from src.game.Sprites.SpriteSheet import SpriteSheet
 class EntidadBase:
     def __init__(self, posicion_inicial: tuple, velocidad: float, url: str, contexto: ContextoDelJuego, filas, columnas):
 
-        alto = MEDIDA_DE_TILE_ESCALADO
-        ancho = MEDIDA_DE_TILE_ESCALADO
+        alto = MEDIDA_DE_TILE_ORIGINAL
+        ancho = MEDIDA_DE_TILE_ORIGINAL
 
         self.url: str = url
         self.spritesheet = SpriteSheet(url)
