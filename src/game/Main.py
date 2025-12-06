@@ -32,6 +32,7 @@ def main():
         for entidad in contexto.entidades:
             if entidad is jugador:
                 continue
+            entidad.actualizar_muerte()
             entidad.movimiento()
             entidad.actualizar()
 

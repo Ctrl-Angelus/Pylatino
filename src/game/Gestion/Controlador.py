@@ -37,7 +37,7 @@ class Controlador:
                     if posicion_libre:
                         self.jugador_intangible()
                     else:
-                        print("Esta área tiene colisiones o está fuera del mapa")
+                        print("Esta área tiene tiene_colisiones o está fuera del mapa")
 
                 else:
                     self.jugador_intangible()

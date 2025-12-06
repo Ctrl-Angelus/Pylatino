@@ -20,13 +20,14 @@ class Enemigo(EntidadBase):
         self.empuje_duracion = 400 # milisegundos
         self.empuje_inicio = 0
         self.empuje_actual = 0
-
-
+        self.muerte_duracion = 2000
+        self.muerte_inicio = 0
+        self.muerte_actual = 0
 
         self.spritesheet = SpriteSheet("src/recursos/enemigo-spritesheet.png")
         self.spritesheet.generar_frames(
-            2,
-            2,
+            4,
+            3,
             (MEDIDA_DE_TILE_ORIGINAL, MEDIDA_DE_TILE_ORIGINAL),
             (1, 1),
             1
@@ -80,16 +81,28 @@ class Enemigo(EntidadBase):
             self.empuje_y = movimiento_y
 
     def morir(self):
-        self.contexto.entidades.remove(self)
+        self.tiene_movimiento = False
+        self.tiene_colisiones = False
+        self.entidad_viva = False
+        self.spritesheet.iniciar_animacion()
+        self.animacion_actual = self.animaciones["muerte"]
+        self.muerte_inicio = pygame.time.get_ticks()
 
     def mostrar(self):
-        if self.entidad_viva:
-            if self.invertido:
-                self.contexto.escena.blit(
-                    pygame.transform.flip(self.spritesheet.obtener_sprite_actual().imagen, True, False),
-                    self.obtener_posicion_visual())
-                self.spritesheet.animacion(self.animacion_actual)
-            else:
-                self.contexto.escena.blit(self.spritesheet.obtener_sprite_actual().imagen,
-                                          self.obtener_posicion_visual())
-                self.spritesheet.animacion(self.animacion_actual)
+        if self.invertido:
+            self.contexto.escena.blit(
+                pygame.transform.flip(self.spritesheet.obtener_sprite_actual().imagen, True, False),
+                self.obtener_posicion_visual())
+
+            self.spritesheet.animacion(self.animacion_actual)
+
+        else:
+            self.contexto.escena.blit(self.spritesheet.obtener_sprite_actual().imagen,
+                                      self.obtener_posicion_visual())
+            self.spritesheet.animacion(self.animacion_actual)
+
+    def actualizar_muerte(self):
+        if not self.entidad_viva:
+            self.muerte_actual = pygame.time.get_ticks()
+            if self.muerte_actual - self.muerte_inicio >= self.muerte_duracion:
+                self.contexto.entidades.remove(self)

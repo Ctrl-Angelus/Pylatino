@@ -9,6 +9,9 @@ def colisiones_con_empuje(jugador, movimiento_x: float, movimiento_y: float, ent
         if entidad_lista is jugador:
             continue
 
+        if not entidad_lista.tiene_colisiones:
+            continue
+
         collide_entidad = jugador.cuerpo.colliderect(entidad_lista.cuerpo)
 
         if collide_entidad:
@@ -26,6 +29,9 @@ def colisiones_con_empuje(jugador, movimiento_x: float, movimiento_y: float, ent
 
     for entidad_lista in entidades:
         if entidad_lista is jugador:
+            continue
+
+        if not entidad_lista.tiene_colisiones:
             continue
 
         collide_entidad = jugador.cuerpo.colliderect(entidad_lista.cuerpo)

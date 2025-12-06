@@ -37,14 +37,15 @@ class EntidadBase:
 
         self.modificador_de_velocidad = 1
         self.direccion = 1
-        self.colisiones = True
+        self.tiene_colisiones = True
         self.entidad_viva = True
         self.tiene_movimiento = True
         self.invertido = False
 
         self.animaciones = {
             "original": 0,
-            "daño": 1
+            "daño": 1,
+            "muerte": 2
         }
 
         self.animacion_actual = self.animaciones["original"]
@@ -56,7 +57,7 @@ class EntidadBase:
             self.direccion *= -1
 
     def alternar_colisiones(self) -> None:
-        self.colisiones = not self.colisiones
+        self.tiene_colisiones = not self.tiene_colisiones
 
     def obtener_posicion_visual(self) -> tuple:
         return self.cuerpo.x - self.contexto.offset[0], self.cuerpo.y - self.contexto.offset[1]
@@ -80,20 +81,26 @@ class EntidadBase:
     def realizar_daño(self, puntos_de_daño: int):
         if not self.inmunidad:
             self.iniciar_inmunidad()
-            self.daño(puntos_de_daño)
+            muerte = self.daño(puntos_de_daño)
+            if muerte:
+                return
             self.animacion_actual = self.animaciones["daño"]
 
         else:
             self.inmunidad_actual = pygame.time.get_ticks()
             if self.inmunidad_actual - self.inmunidad_inicio >= self.duracion_inmunidad:
-                self.animacion_actual = self.animaciones["original"]
+                if self.entidad_viva:
+                    self.animacion_actual = self.animaciones["original"]
                 self.inmunidad = False
 
-    def daño(self, puntos_de_daño: int):
+    def daño(self, puntos_de_daño: int) -> bool:
         self.vida -= puntos_de_daño
+
 
         if self.vida <= 0:
             self.morir()
+            return True
+        return False
 
     def iniciar_inmunidad(self):
         self.inmunidad = True
@@ -104,7 +111,8 @@ class EntidadBase:
             ahora = pygame.time.get_ticks()
             if ahora - self.inmunidad_inicio >= self.duracion_inmunidad:
                 self.inmunidad = False
-                self.animacion_actual = 0
+                if self.entidad_viva:
+                    self.animacion_actual = self.animaciones["original"]
 
     def morir(self):
         pass

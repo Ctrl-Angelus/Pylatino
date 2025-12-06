@@ -10,6 +10,9 @@ def colisiones(entidad, contexto, movimiento_x: float, movimiento_y: float):
         if entidad_lista is entidad:
             continue
 
+        if not entidad_lista.tiene_colisiones:
+            continue
+
         collide_entidad = entidad.cuerpo.colliderect(entidad_lista.cuerpo)
 
         if collide_entidad:
@@ -28,6 +31,9 @@ def colisiones(entidad, contexto, movimiento_x: float, movimiento_y: float):
 
     for entidad_lista in contexto.entidades:
         if entidad_lista is entidad:
+            continue
+
+        if not entidad_lista.tiene_colisiones:
             continue
 
         collide_entidad = entidad.cuerpo.colliderect(entidad_lista.cuerpo)

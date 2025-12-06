@@ -45,6 +45,7 @@ class SpriteSheet:
     def iniciar_animacion(self):
         self.animacion_activa = True
         self.inicio_animacion = pygame.time.get_ticks()
+        self.coordenada_sprite_actual[1] = 0
 
     def finalizar_animacion(self):
         self.animacion_activa = False

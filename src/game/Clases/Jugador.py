@@ -68,7 +68,7 @@ class Jugador(EntidadBase):
         movimiento_x *= self.direccion
         movimiento_y *= self.direccion
 
-        if self.colisiones:
+        if self.tiene_colisiones:
             movimiento_x, movimiento_y = colisiones_tiles(self, movimiento_x, movimiento_y, self.contexto)
 
             if self.dash_activo:
