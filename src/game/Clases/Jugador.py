@@ -144,7 +144,7 @@ class Jugador(EntidadBase):
         if not self.entidad_viva:
             self.muerte_actual = pygame.time.get_ticks()
             if self.muerte_actual - self.muerte_inicio >= self.muerte_duracion:
-                self.contexto.terminar_game_loop()
+                self.contexto.reiniciar = True
 
     def disparar(self):
         if self.municion <= 0:

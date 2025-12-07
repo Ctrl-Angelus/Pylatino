@@ -74,7 +74,7 @@ class TileCuracion(TileConAccion):
     def accion(self):
         if self.contexto.jugador.vida == self.contexto.jugador.vida_total:
             return
-        self.contexto.jugador.vida += 10
+        self.contexto.jugador.vida += 5
 
         if self.contexto.jugador.vida > self.contexto.jugador.vida_total:
             self.contexto.jugador.vida = self.contexto.jugador.vida_total

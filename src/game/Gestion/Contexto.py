@@ -11,6 +11,7 @@ class ContextoDelJuego:
 
         self.ejecutando = True
         self.menu_activo = True
+        self.reiniciar = False
         self.offset = [0, 0]
 
         self.fuente = pygame.font.Font("src/recursos/fuente/Medodica.otf", int(DIMENSIONES_DEL_LIENZO[0] * 0.05))

@@ -29,6 +29,10 @@ class Controlador:
             if evento.button == 1:
                 self.jugador.disparar()
 
+            # Habilidades del jugador para usar en un futuro
+            """ 
+            if evento.button == 2:
+                self.contexto.alternar_direccion_enemigos()
             if evento.button == 3:
                 if self.jugador.es_intangible():
 
@@ -42,8 +46,7 @@ class Controlador:
                 else:
                     self.jugador_intangible()
 
-            if evento.button == 6:
-                self.contexto.limpiar_entidades()
+            """
 
     def verificar_controles(self):
         teclas_presionadas = pygame.key.get_pressed()
@@ -53,6 +56,7 @@ class Controlador:
 
         if teclas_presionadas[pygame.K_ESCAPE]:
             self.contexto.menu_activo = True
+            self.contexto.reiniciar = True
 
         if teclas_presionadas[pygame.K_SPACE]:
             self.realizar_dash()

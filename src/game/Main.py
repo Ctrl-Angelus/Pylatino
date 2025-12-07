@@ -15,13 +15,13 @@ def main():
 
     administrador_de_entidades = AdministradorDeEntidades(contexto)
     contexto.administrador_de_entidades = administrador_de_entidades
-    contexto.administrador_de_entidades.generar_oleada(10)
+    contexto.administrador_de_entidades.generar_oleada(50)
     contexto.entidades.append(jugador)
 
     controlador = Controlador(contexto, jugador)
 
     pygame.mixer.music.load("src/recursos/audio/musica-fondo.mp3")
-    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.set_volume(0.2)
     pygame.mixer.music.play(-1)
 
     menu_original = pygame.image.load("src/recursos/menu.png")
@@ -36,6 +36,20 @@ def main():
 
 
     while contexto.ejecutando:
+
+        if contexto.reiniciar:
+            contexto = ContextoDelJuego()
+
+            jugador = Jugador(contexto)
+            contexto.jugador = jugador
+
+            administrador_de_entidades = AdministradorDeEntidades(contexto)
+            contexto.administrador_de_entidades = administrador_de_entidades
+            contexto.administrador_de_entidades.generar_oleada(10)
+            contexto.entidades.append(jugador)
+
+            controlador = Controlador(contexto, jugador)
+            contexto.reiniciar = False
 
         if contexto.menu_activo:
             contexto.escena.blit(menu, (0, 0))
