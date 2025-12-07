@@ -74,7 +74,11 @@ class TileCuracion(TileConAccion):
     def accion(self):
         if self.contexto.jugador.vida == self.contexto.jugador.vida_total:
             return
-        self.contexto.jugador.vida = self.contexto.jugador.vida_total
+        self.contexto.jugador.vida += 10
+
+        if self.contexto.jugador.vida > self.contexto.jugador.vida_total:
+            self.contexto.jugador.vida = self.contexto.jugador.vida_total
+
         self.tiene_accion = False
         self.cambiar_tile()
         sonido_salud()

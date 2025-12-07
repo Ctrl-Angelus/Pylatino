@@ -10,9 +10,10 @@ class ContextoDelJuego:
         pygame.init()
 
         self.ejecutando = True
+        self.menu_activo = True
         self.offset = [0, 0]
 
-        self.fuente = pygame.font.Font("src/recursos/fuente/Medodica.otf", 60)
+        self.fuente = pygame.font.Font("src/recursos/fuente/Medodica.otf", int(DIMENSIONES_DEL_LIENZO[0] * 0.05))
 
         self.escena: Surface = pygame.display.set_mode(DIMENSIONES_DEL_LIENZO)
         self.reloj = pygame.time.Clock()

@@ -1,3 +1,5 @@
+<img src="src/recursos/portada.png" alt="portada" align="center">
+
 # Proyecto final Pylatino 25
 
 ## Requisitos
