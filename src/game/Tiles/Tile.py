@@ -88,6 +88,7 @@ class TileMunicion(TileConAccion):
     def accion(self):
         self.contexto.jugador.municion += 5
         self.tiene_accion = False
+        self.colision = True
         self.cambiar_tile()
         sonido_cofre()
         print("Recarga")

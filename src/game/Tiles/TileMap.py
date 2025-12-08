@@ -43,7 +43,7 @@ class TileMap:
                     continue
 
                 indice =  material - 1
-                colision = True if (material in (1, 2, 3, 5, 6, 12)) else False
+                colision = True if (material in (1, 2, 3, 5, 6, 12, 13)) else False
                 accion = True if material in (10, 13) else False
 
                 imagen_nuevo_tile = lista[0][indice]
