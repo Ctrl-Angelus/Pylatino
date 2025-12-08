@@ -13,7 +13,7 @@ El arte del juego se realizó con el programa `LibreSprite`.
 > Música de fondo: "Trouble is Brewing" de David Fesliyan. [Enlace al sitio](https://www.fesliyanstudios.com/royalty-free-music/download/trouble-is-brewing/296)
 
 > [!IMPORTANT]
-> Al finalizar el juego, morir o reiniciar, la dificultad y cantidad de enemigos aumentarán.
+> Al finalizar el juego y volver a iniciarlo, la dificultad y cantidad de enemigos aumentarán.
 
 ## Requisitos
 - Python 3.10+ (Preferentemente Python 3.13)

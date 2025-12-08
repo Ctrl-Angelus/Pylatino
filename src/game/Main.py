@@ -67,6 +67,8 @@ def main():
         )
     )
 
+    aumento_oleada = False
+    regresar_al_menu = True
 
     while contexto.ejecutando:
 
@@ -75,7 +77,7 @@ def main():
 
             jugador = Jugador(contexto)
             contexto.jugador = jugador
-            if cantidad_de_enemigos <= 45:
+            if cantidad_de_enemigos <= 45 and aumento_oleada:
                 cantidad_de_enemigos += 5
 
             administrador_de_entidades = AdministradorDeEntidades(contexto)
@@ -85,6 +87,8 @@ def main():
 
             controlador = Controlador(contexto, jugador)
             contexto.reiniciar = False
+            contexto.menu_activo = regresar_al_menu
+
 
         if contexto.menu_activo:
             contexto.escena.blit(menu, (0, 0))
@@ -146,15 +150,16 @@ def main():
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_RETURN:
                         contexto.pantalla_final = False
-                        contexto.menu_activo = True
                         contexto.reiniciar = True
+                        regresar_al_menu = True
+                        aumento_oleada = True
 
 
             continue
 
         elif contexto.pantalla_muerte:
             contexto.escena.blit(muerte, (0, 0))
-            texto = contexto.fuente.render("Presione ENTER para ir al Menú", True, (255, 255, 255))
+            texto = contexto.fuente.render("Presione ENTER para reiniciar", True, (255, 255, 255))
             contexto.escena.blit(texto, (
                 DIMENSIONES_DEL_LIENZO[0] / 2 - texto.get_width() / 2, DIMENSIONES_DEL_LIENZO[1] * 0.9
             ))
@@ -167,8 +172,9 @@ def main():
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_RETURN:
                         contexto.pantalla_muerte = False
-                        contexto.menu_activo = True
                         contexto.reiniciar = True
+                        aumento_oleada = False
+                        regresar_al_menu = False
 
 
             continue
