@@ -10,7 +10,7 @@ def colisiones_tiles(entidad, movimiento_x: float, movimiento_y: float, contexto
     for tile in tiles_cercanos:
         if tile is None:
             continue
-        if tile.tiene_accion:
+        if tile.tiene_accion and entidad is contexto.jugador:
             if simulacion_x.colliderect(tile.cuerpo):
                 tile.accion()
         if not tile.colision:
@@ -32,7 +32,7 @@ def colisiones_tiles(entidad, movimiento_x: float, movimiento_y: float, contexto
     for tile in tiles_cercanos:
         if tile is None:
             continue
-        if tile.tiene_accion:
+        if tile.tiene_accion and entidad is contexto.jugador:
             if simulacion_y.colliderect(tile.cuerpo):
                 tile.accion()
         if not tile.colision:
