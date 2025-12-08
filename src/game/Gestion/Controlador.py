@@ -55,8 +55,8 @@ class Controlador:
         atras = teclas_presionadas[self.jugador.controles["atrás"]]
 
         if teclas_presionadas[pygame.K_ESCAPE]:
-            self.contexto.menu_activo = True
             self.contexto.reiniciar = True
+            self.contexto.regresar_al_menu = False
 
         if teclas_presionadas[pygame.K_SPACE]:
             self.realizar_dash()

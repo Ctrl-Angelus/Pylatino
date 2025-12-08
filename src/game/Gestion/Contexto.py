@@ -17,6 +17,9 @@ class ContextoDelJuego:
         self.reiniciar = False
         self.offset = [0, 0]
 
+
+        self.regresar_al_menu = True
+
         self.fuente = pygame.font.Font("src/recursos/fuente/Medodica.otf", int(DIMENSIONES_DEL_LIENZO[0] * 0.05))
 
         self.escena: Surface = pygame.display.set_mode(DIMENSIONES_DEL_LIENZO)

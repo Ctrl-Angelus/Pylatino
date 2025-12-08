@@ -68,7 +68,6 @@ def main():
     )
 
     aumento_oleada = False
-    regresar_al_menu = True
 
     while contexto.ejecutando:
 
@@ -87,7 +86,8 @@ def main():
 
             controlador = Controlador(contexto, jugador)
             contexto.reiniciar = False
-            contexto.menu_activo = regresar_al_menu
+            contexto.menu_activo = contexto.regresar_al_menu
+            aumento_oleada = False
 
 
         if contexto.menu_activo:
@@ -151,7 +151,7 @@ def main():
                     if evento.key == pygame.K_RETURN:
                         contexto.pantalla_final = False
                         contexto.reiniciar = True
-                        regresar_al_menu = True
+                        contexto.regresar_al_menu = True
                         aumento_oleada = True
 
 
@@ -174,7 +174,7 @@ def main():
                         contexto.pantalla_muerte = False
                         contexto.reiniciar = True
                         aumento_oleada = False
-                        regresar_al_menu = False
+                        contexto.regresar_al_menu = False
 
 
             continue
